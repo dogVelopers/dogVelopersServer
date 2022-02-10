@@ -1,15 +1,18 @@
-package com.dogvelopers.dogvelopers.dto;
+package com.dogvelopers.dogvelopers.entity;
 
-import lombok.Data;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
-@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 @Table(name = "HOF")
 public class Hof {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
     private Long id;
 

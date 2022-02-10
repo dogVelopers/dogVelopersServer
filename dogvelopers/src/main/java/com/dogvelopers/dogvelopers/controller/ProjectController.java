@@ -1,14 +1,12 @@
 package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.service.ProjectService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@RequiredArgsConstructor
 public class ProjectController {
 
-    private ProjectService projectService;
-
-    public ProjectController(ProjectService projectService){
-        this.projectService = projectService;
-    }
+    private final ProjectService projectService;
 }

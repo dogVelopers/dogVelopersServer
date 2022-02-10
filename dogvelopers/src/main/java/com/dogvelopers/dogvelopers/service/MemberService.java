@@ -1,14 +1,13 @@
 package com.dogvelopers.dogvelopers.service;
 
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepository memberRepository){
-        this.memberRepository = memberRepository;
-    }
 }

@@ -1,14 +1,12 @@
 package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.service.MemberService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
-    private MemberService memberService;
-
-    public MemberController(MemberService memberService){
-        this.memberService = memberService;
-    }
+    private final MemberService memberService;
 }
