@@ -1,6 +1,7 @@
 package com.dogvelopers.dogvelopers.entity;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "PROJECT")
 public class Project {
 
@@ -28,4 +30,12 @@ public class Project {
 
     @Column(name = "END_DATE")
     private LocalDateTime endDate;
+
+    @Builder
+    public Project(String name , String description , LocalDateTime startDate , LocalDateTime endDate){
+        this.name = name;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }
