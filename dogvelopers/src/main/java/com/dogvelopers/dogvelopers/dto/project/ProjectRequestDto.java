@@ -19,7 +19,7 @@ public class ProjectRequestDto {
     private LocalDateTime endDate;
 
     @Builder
-    public Project toEntity(Project project){
+    public Project toEntity(){
         return Project.builder()
                 .name(name)
                 .description(description)

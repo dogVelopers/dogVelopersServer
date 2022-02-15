@@ -9,4 +9,4 @@ spring:
     password: dogs0209!!
 
 server:
-  port: "8088
+  port: 8088
