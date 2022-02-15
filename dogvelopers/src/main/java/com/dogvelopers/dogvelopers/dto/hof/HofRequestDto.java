@@ -1,4 +1,4 @@
-package com.dogvelopers.dogvelopers.dto;
+package com.dogvelopers.dogvelopers.dto.hof;
 
 import com.dogvelopers.dogvelopers.entity.Hof;
 import com.dogvelopers.dogvelopers.entity.Member;

@@ -1,4 +1,4 @@
-package com.dogvelopers.dogvelopers.dto;
+package com.dogvelopers.dogvelopers.dto.project;
 
 import com.dogvelopers.dogvelopers.entity.Project;
 import lombok.Getter;

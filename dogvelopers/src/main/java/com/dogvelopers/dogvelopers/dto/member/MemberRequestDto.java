@@ -1,4 +1,4 @@
-package com.dogvelopers.dogvelopers.dto;
+package com.dogvelopers.dogvelopers.dto.member;
 
 import com.dogvelopers.dogvelopers.entity.Member;
 import lombok.*;

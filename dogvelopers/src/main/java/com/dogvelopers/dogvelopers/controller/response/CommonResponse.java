@@ -1,4 +1,4 @@
-package com.skhuedin.skhuedin.controller.response;
+package com.dogvelopers.dogvelopers.controller.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
