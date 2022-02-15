@@ -1,0 +1,12 @@
+#spring.jpa.hibernate.ddl-auto = create
+spring:
+  jpa:
+    show-sql: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dogveloper?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: dogvelopers
+    password: dogs0209!!
+
+server:
+  port: "8088
