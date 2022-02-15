@@ -1,13 +1,15 @@
 package com.dogvelopers.dogvelopers.dto;
 
 import com.dogvelopers.dogvelopers.entity.Project;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.Builder;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class ProjectRequestDto {
 
