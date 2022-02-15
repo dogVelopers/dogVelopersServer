@@ -18,7 +18,7 @@ public class MemberRequestDto {
 
     private String major;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime birthDay;
 
     @Builder

@@ -2,12 +2,10 @@ package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.dto.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.MemberResponseDto;
-import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
