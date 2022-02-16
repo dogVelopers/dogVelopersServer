@@ -1,9 +1,8 @@
 package com.dogvelopers.dogvelopers.service;
 
-import com.dogvelopers.dogvelopers.dto.MemberRequestDto;
-import com.dogvelopers.dogvelopers.dto.MemberResponseDto;
+import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
+import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
 import com.dogvelopers.dogvelopers.entity.Member;
-import com.dogvelopers.dogvelopers.enumType.ErrorCode;
 import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.dogvelopers.dogvelopers.enumType.ErrorCode.BAD_REQUEST_INFO;
-import static com.dogvelopers.dogvelopers.enumType.ErrorCode.DUPLICATE_INFO;
 
 import java.time.LocalDateTime;
 import java.util.List;

@@ -38,4 +38,11 @@ public class Project {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public void updateProject(Project project) {
+        this.name = project.name;
+        this.description = project.description;
+        this.startDate = project.startDate;
+        this.endDate = project.endDate;
+    }
 }

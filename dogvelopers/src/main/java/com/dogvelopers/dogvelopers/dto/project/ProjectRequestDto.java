@@ -1,4 +1,4 @@
-package com.dogvelopers.dogvelopers.dto;
+package com.dogvelopers.dogvelopers.dto.project;
 
 import com.dogvelopers.dogvelopers.entity.Project;
 import lombok.Getter;
@@ -19,7 +19,7 @@ public class ProjectRequestDto {
     private LocalDateTime endDate;
 
     @Builder
-    public Project toEntity(Project project){
+    public Project toEntity(){
         return Project.builder()
                 .name(name)
                 .description(description)

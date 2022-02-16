@@ -1,9 +1,8 @@
 package com.dogvelopers.dogvelopers.service;
 
-import com.dogvelopers.dogvelopers.dto.HofRequestDto;
-import com.dogvelopers.dogvelopers.dto.HofResponseDto;
+import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
+import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
 import com.dogvelopers.dogvelopers.entity.Hof;
-import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.HofRepository;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;

@@ -1,7 +1,7 @@
 package com.dogvelopers.dogvelopers.controller;
 
-import com.dogvelopers.dogvelopers.dto.HofRequestDto;
-import com.dogvelopers.dogvelopers.dto.HofResponseDto;
+import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
+import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
 import com.dogvelopers.dogvelopers.service.HofService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
