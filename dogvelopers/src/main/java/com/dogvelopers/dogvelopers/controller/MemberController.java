@@ -16,8 +16,13 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseEntity<MemberResponseDto> findAll(){ // member 전체 조록
+    public ResponseEntity<MemberResponseDto> findAll(){ // member 전체 조회
         return new ResponseEntity(memberService.findAll() , HttpStatus.OK);
+    }
+
+    @GetMapping("{joinDate}") // 기수로 검색
+    public ResponseEntity<MemberResponseDto> findByJoinDate(@PathVariable("joinDate") Long year){
+        return new ResponseEntity(memberService.findByJoinDate(year) , HttpStatus.OK);
     }
 
     @PostMapping("register") // member 등록

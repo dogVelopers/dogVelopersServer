@@ -12,6 +12,7 @@ public class MemberResponseDto {
     private String studentId;
     private String major;
     private LocalDateTime birthDay;
+    private LocalDateTime joinDate;
 
     public MemberResponseDto(Member member){
         this.id = member.getId();
@@ -19,5 +20,6 @@ public class MemberResponseDto {
         this.studentId = member.getStudentId();
         this.major = member.getMajor();
         this.birthDay = member.getBirthDay();
+        this.joinDate = member.getJoinDate();
     }
 }

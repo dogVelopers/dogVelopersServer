@@ -18,8 +18,11 @@ public class MemberRequestDto {
 
     private String major;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime birthDay;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime joinDate;
 
     @Builder
     public Member toEntity(){
@@ -28,6 +31,7 @@ public class MemberRequestDto {
                 .studentId(studentId)
                 .major(major)
                 .birthDay(birthDay)
+                .joinDate(joinDate)
                 .build();
     }
 }

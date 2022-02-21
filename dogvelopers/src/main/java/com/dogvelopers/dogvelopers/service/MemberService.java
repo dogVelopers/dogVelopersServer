@@ -33,11 +33,28 @@ public class MemberService {
     }
 
     @Transactional
-    public List<MemberResponseDto> findAll(){
+    public List<MemberResponseDto> findAll(){ // 기수의 역순으로 반환되게 끔 설정
         List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
-        for(Member member : memberRepository.findAll()){
+
+        for(Member member : memberRepository.findAllByOrderByJoinDateDesc()){
             memberResponseDtos.add(new MemberResponseDto(member));
         }
+
+        return memberResponseDtos;
+    }
+
+    @Transactional
+    public List<MemberResponseDto> findByJoinDate(Long year){
+        // year 을 받아서 , 해당 연도를 검색
+        LocalDateTime startDate = LocalDateTime.of(year.intValue() , 1 , 1 , 0 , 0 , 0);
+        LocalDateTime endDate = LocalDateTime.of(year.intValue() , 12 , 31 , 23 , 59 , 59);
+
+        List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
+
+        for(Member member : memberRepository.findByJoinDateBetweenOrderByJoinDateDesc(startDate , endDate)){
+            memberResponseDtos.add(new MemberResponseDto(member));
+        }
+
         return memberResponseDtos;
     }
 }
