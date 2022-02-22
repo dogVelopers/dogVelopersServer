@@ -1,7 +1,10 @@
 package com.dogvelopers.dogvelopers.controller;
 
+import com.dogvelopers.dogvelopers.controller.response.BasicResponse;
+import com.dogvelopers.dogvelopers.controller.response.CommonResponse;
 import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
+import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,12 +24,24 @@ public class MemberController {
     }
 
     @GetMapping("{joinDate}") // 기수로 검색
-    public ResponseEntity<MemberResponseDto> findByJoinDate(@PathVariable("joinDate") Long year){
-        return new ResponseEntity(memberService.findByJoinDate(year) , HttpStatus.OK);
+    public ResponseEntity<MemberResponseDto> findByJoinDate(@PathVariable("joinDate") Long joinDate){
+        return new ResponseEntity(memberService.findByJoinDate(joinDate) , HttpStatus.OK);
     }
 
-    @PostMapping("register") // member 등록
+    @PostMapping("{memberId}") // member 등록
     public ResponseEntity<MemberResponseDto> save(MemberRequestDto memberRequestDto){
         return ResponseEntity.ok(memberService.save(memberRequestDto));
+    }
+
+    @PutMapping("{memberId}") // member 수정
+    public ResponseEntity<MemberResponseDto> update(@PathVariable("memberId") Long id, MemberRequestDto memberRequestDto) {
+        return new ResponseEntity(memberService.update(id, memberRequestDto) , HttpStatus.OK);
+    }
+
+    @DeleteMapping("{memberId}") // member 삭제
+    public ResponseEntity delete(@PathVariable("memberId") Long id) {
+        memberService.delete(id);
+        return ResponseEntity.noContent()
+                .build();
     }
 }

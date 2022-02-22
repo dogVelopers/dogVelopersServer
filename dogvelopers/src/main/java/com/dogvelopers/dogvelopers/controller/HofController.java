@@ -2,14 +2,13 @@ package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
 import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
+import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
+import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
 import com.dogvelopers.dogvelopers.service.HofService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,14 +17,31 @@ public class HofController {
 
     private final HofService hofService;
 
-    @GetMapping()
+    @GetMapping() // 명예의 전당 모두 조회
     public ResponseEntity<HofResponseDto> findAll(){ // 명예의 전당 전부 조회
         return new ResponseEntity(hofService.findAll() , HttpStatus.OK);
     }
 
-    @PostMapping("register") // 명예의 전당 등록
-    public ResponseEntity<HofResponseDto> register(HofRequestDto hofRequestDto){
+    @GetMapping("{joinDate}") // 명예의 전당 기수별로 조회
+    public ResponseEntity<HofResponseDto> findByJoinDate(@PathVariable("joinDate") Long joinDate){
+        return new ResponseEntity(hofService.findByJoinDate(joinDate) , HttpStatus.OK);
+    }
+
+    @PostMapping() // 명예의 전당 등록
+    public ResponseEntity<HofResponseDto> save(HofRequestDto hofRequestDto){
         return ResponseEntity.ok(hofService.save(hofRequestDto));
+    }
+
+    @PutMapping("{hofId}") // 명예의 전당 회원 수정
+    public ResponseEntity<MemberResponseDto> update(@PathVariable("hofId") Long id, HofRequestDto hofRequestDto) {
+        return new ResponseEntity(hofService.update(id, hofRequestDto) , HttpStatus.OK);
+    }
+
+    @DeleteMapping("{hofId}") // 명예의 전당 회원 삭제
+    public ResponseEntity delete(@PathVariable("hofId") Long id) {
+        hofService.delete(id);
+        return ResponseEntity.noContent()
+                .build();
     }
 }
 
