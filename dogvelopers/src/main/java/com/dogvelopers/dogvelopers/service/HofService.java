@@ -2,8 +2,7 @@ package com.dogvelopers.dogvelopers.service;
 
 import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
 import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
-import com.dogvelopers.dogvelopers.dto.hof.SortByDate;
-import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
+import com.dogvelopers.dogvelopers.dto.hof.SortByGeneration;
 import com.dogvelopers.dogvelopers.entity.Hof;
 import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.handler.CustomException;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,7 +30,7 @@ public class HofService {
     public List<HofResponseDto> findAll(){
         List<HofResponseDto> hofResponseDtos = new ArrayList<>();
         List<Hof> hofs = hofRepository.findAll();
-        Collections.sort(hofs , new SortByDate()); // 기수 순으로 정렬
+        Collections.sort(hofs , new SortByGeneration()); // 기수 순으로 정렬
         for(Hof hof : hofs){
             hofResponseDtos.add(new HofResponseDto(hof));
         }
@@ -40,18 +38,19 @@ public class HofService {
     }
 
     @Transactional
-    public List<HofResponseDto> findByJoinDate(Long year){ // 기수 별로 조회
+    public List<HofResponseDto> findByGeneration(Long generation){ // 기수 별로 조회
         List<HofResponseDto> hofResponseDtos = new ArrayList<>();
         List<Hof> hofs = hofRepository.findAll();
-        Collections.sort(hofs , new SortByDate());
+        Collections.sort(hofs , new SortByGeneration());
         for(Hof hof : hofs){
-            if(hof.getMember().getJoinDate().getYear() == year) hofResponseDtos.add(new HofResponseDto(hof));
+            if(hof.getMember().getGeneration() == generation) hofResponseDtos.add(new HofResponseDto(hof));
         }
         return hofResponseDtos;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public HofResponseDto save(HofRequestDto hofRequestDto){
+
         // introduction , company 가 비어있거나 , null 인 경우 예외 발생
         if(exceptionCheck(hofRequestDto)) {
             throw new CustomException(BAD_REQUEST_INFO);
@@ -77,12 +76,10 @@ public class HofService {
         if(exceptionCheck(hofRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
 
         // member로 등록되지 않은 사람을 등록하였을 때 예외 발생
-        if(!memberRepository.existsById(hofRequestDto.getMemberId())){
-            throw new CustomException(NOT_FOUND_INFO);
-        }
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> {throw new CustomException(NOT_FOUND_INFO);});
 
         Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        hofRequestDto.setMember(memberRepository.findById(id).get());
         hof.updateHof(hofRequestDto.toEntity());
 
         return new HofResponseDto(hofRepository.save(hof));
@@ -97,9 +94,12 @@ public class HofService {
 
     // exception 체크
     public boolean exceptionCheck(HofRequestDto hofRequestDto){
-        if(hofRequestDto.getIntroduction() == null || hofRequestDto.getIntroduction().isBlank()
-                || hofRequestDto.getCompany() == null || hofRequestDto.getCompany().isBlank()) return true;
+        if(checkNullBlank(hofRequestDto.getIntroduction()) || checkNullBlank(hofRequestDto.getCompany())) return true;
         return false;
     }
 
+    public boolean checkNullBlank(String string){
+        if(string == null || string.isBlank()) return true;
+        return false;
+    }
 }

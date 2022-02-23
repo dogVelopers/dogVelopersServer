@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th = "https://thymeleaf.org">
+<body>
+
+<a th:href="@{/hofs/new}">HOF</a>
+<a th:href="@{/members/new}">MEMBER</a>
+
+<div class = "container">
+    <form action = "/projects" method = "post">
+        <div class = "form_group">
+            <label for = "name"> name</label>
+            <input type = "text" id = "name" name = "name" placeholder="입력하시오"><br><br>
+
+            <label for = "description"> description</label>
+            <input type = "text" id = "description" name = "description" placeholder="입력하시오"><br><br>
+
+            <label for = "startDate"> startDate</label>
+            <input type = "datetime-local" id = "startDate" name = "startDate" placeholder="입력하시오"><br><br>
+
+            <label for = "endDate"> endDate</label>
+            <input type = "datetime-local" id = "endDate" name = "endDate" placeholder="입력하시오"><br><br>
+
+        </div>
+        <button type ="submit">등록</button>
+    </form>
+</div>
+
+</body>
+</html>

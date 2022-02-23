@@ -3,7 +3,7 @@ package com.dogvelopers.dogvelopers.dto.member;
 import com.dogvelopers.dogvelopers.entity.Member;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class MemberResponseDto {
@@ -11,8 +11,8 @@ public class MemberResponseDto {
     private String name;
     private String studentId;
     private String major;
-    private LocalDateTime birthDay;
-    private LocalDateTime joinDate;
+    private LocalDate birthDay;
+    private Long generation;
 
     public MemberResponseDto(Member member){
         this.id = member.getId();
@@ -20,6 +20,6 @@ public class MemberResponseDto {
         this.studentId = member.getStudentId();
         this.major = member.getMajor();
         this.birthDay = member.getBirthDay();
-        this.joinDate = member.getJoinDate();
+        this.generation = member.getGeneration();
     }
 }
