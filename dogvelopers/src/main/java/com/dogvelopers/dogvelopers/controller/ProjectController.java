@@ -17,25 +17,20 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    @GetMapping("new")
-    public String setProject(){
-        return "projects/createProjectForm";
-    }
-
     @GetMapping
-    public @ResponseBody ResponseEntity<? extends BasicResponse> findAll() {
+    public ResponseEntity<? extends BasicResponse> findAll() {
         return ResponseEntity.ok()
                 .body(new ListResponse<>(projectService.findAll()));
     }
 
     @GetMapping("{postId}")
-    public @ResponseBody ResponseEntity<? extends BasicResponse> findById(@PathVariable("postId") Long id) {
+    public ResponseEntity<? extends BasicResponse> findById(@PathVariable("postId") Long id) {
         return ResponseEntity.ok()
                 .body(new CommonResponse<>(projectService.findById(id)));
     }
 
     @PostMapping
-    public @ResponseBody ResponseEntity<? extends BasicResponse> save(@RequestBody ProjectSaveRequestDto requestDto) {
+    public ResponseEntity<? extends BasicResponse> save(@RequestBody ProjectSaveRequestDto requestDto) {
         Long saveId = projectService.save(requestDto);
 
         return ResponseEntity.ok()
@@ -43,14 +38,14 @@ public class ProjectController {
     }
 
     @PutMapping("{projectId}")
-    public @ResponseBody ResponseEntity<? extends BasicResponse> update(@PathVariable("projectId") Long id, @RequestBody ProjectSaveRequestDto updateDto) {
+    public ResponseEntity<? extends BasicResponse> update(@PathVariable("projectId") Long id, @RequestBody ProjectSaveRequestDto updateDto) {
         Long projectId = projectService.update(id, updateDto);
         return ResponseEntity.ok()
                 .body(new CommonResponse<>(projectService.findById(projectId)));
     }
 
     @DeleteMapping("{projectId}")
-    public @ResponseBody ResponseEntity<? extends BasicResponse> delete(@PathVariable("projectId") Long id) {
+    public ResponseEntity<? extends BasicResponse> delete(@PathVariable("projectId") Long id) {
         projectService.delete(id);
         return ResponseEntity.noContent()
                 .build();
