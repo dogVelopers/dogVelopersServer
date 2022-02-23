@@ -2,16 +2,12 @@ package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.controller.response.BasicResponse;
 import com.dogvelopers.dogvelopers.controller.response.CommonResponse;
-import com.dogvelopers.dogvelopers.dto.project.ProjectRequestDto;
-import com.dogvelopers.dogvelopers.dto.project.ProjectResponseDto;
+import com.dogvelopers.dogvelopers.controller.response.ListResponse;
 import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.service.ProjectService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("projects")
@@ -21,9 +17,9 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> findAll() {
+    public ResponseEntity<? extends BasicResponse> findAll() {
         return ResponseEntity.ok()
-                .body(projectService.findAll());
+                .body(new ListResponse<>(projectService.findAll()));
     }
 
     @GetMapping("{postId}")
@@ -44,7 +40,7 @@ public class ProjectController {
     public ResponseEntity<? extends BasicResponse> update(@PathVariable("projectId") Long id, @RequestBody ProjectSaveRequestDto updateDto) {
         Long projectId = projectService.update(id, updateDto);
         return ResponseEntity.ok()
-                .body(new CommonResponse<>(projectService.findById(id)));
+                .body(new CommonResponse<>(projectService.findById(projectId)));
     }
 
     @DeleteMapping("{projectId}")
@@ -53,4 +49,5 @@ public class ProjectController {
         return ResponseEntity.noContent()
                 .build();
     }
+
 }

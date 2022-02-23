@@ -1,7 +1,4 @@
-#spring.jpa.hibernate.ddl-auto = create
 spring:
-  jpa:
-    show-sql: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/dogveloper?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -11,6 +8,11 @@ spring:
     hiddentmethod:
       filter:
         enable: true
+
+  jpa:
+    show-sql: true
+#    hibernate:
+#      ddl-auto: create
 
 server:
   port: 8088
