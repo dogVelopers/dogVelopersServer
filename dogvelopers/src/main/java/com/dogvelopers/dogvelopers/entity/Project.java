@@ -5,8 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
+import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,13 +31,13 @@ public class Project {
     private String description;
 
     @Column(name = "START_DATE")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "END_DATE")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Builder
-    public Project(String name , String description , LocalDateTime startDate , LocalDateTime endDate){
+    public Project(String name , String description , LocalDate startDate , LocalDate endDate){
         this.name = name;
         this.description = description;
         this.startDate = startDate;

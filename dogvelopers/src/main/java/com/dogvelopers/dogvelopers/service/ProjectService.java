@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,16 +19,14 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
 
     public List<ProjectResponseDto> findAll() {
-        List<ProjectResponseDto> dtoList = new ArrayList<>();
-        List<Project> projectList = projectRepository.findAll();
-        for (Project project : projectList) {
-            dtoList.add(new ProjectResponseDto(project));
-        }
+        List<ProjectResponseDto> dtoList = projectRepository.findProjectsOrderByStartDate().stream()
+                .map(model -> new ProjectResponseDto(model))
+                .collect(Collectors.toList());
         return dtoList;
     }
 
     public ProjectResponseDto findById(Long id) {
-        var project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return new ProjectResponseDto(project);
     }
 

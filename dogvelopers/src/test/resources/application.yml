@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/dvtest?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: sa
+    password:
+  mvc:
+    hiddentmethod:
+      filter:
+        enable: true
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+
+server:
+  port: 8088
