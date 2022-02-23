@@ -4,6 +4,7 @@ import com.dogvelopers.dogvelopers.entity.Member;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,15 +15,15 @@ public class MemberRequestDto {
 
     private String name;
 
+    private Long generation;
+
     private String studentId;
 
     private String major;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime birthDay;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate birthDay;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime joinDate;
 
     @Builder
     public Member toEntity(){
@@ -31,7 +32,7 @@ public class MemberRequestDto {
                 .studentId(studentId)
                 .major(major)
                 .birthDay(birthDay)
-                .joinDate(joinDate)
+                .generation(generation)
                 .build();
     }
 }

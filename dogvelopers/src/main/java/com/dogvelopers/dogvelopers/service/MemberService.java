@@ -39,7 +39,7 @@ public class MemberService {
     public List<MemberResponseDto> findAll(){ // 기수의 역순으로 반환되게 끔 설정
         List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
 
-        for(Member member : memberRepository.findAllByOrderByJoinDateDesc()){
+        for(Member member : memberRepository.findAllByOrderByGenerationDesc()){
             memberResponseDtos.add(new MemberResponseDto(member));
         }
 
@@ -47,14 +47,11 @@ public class MemberService {
     }
 
     @Transactional
-    public List<MemberResponseDto> findByJoinDate(Long year){
-        // year 을 받아서 , 해당 연도를 검색
-        LocalDateTime startDate = LocalDateTime.of(year.intValue() , 1 , 1 , 0 , 0 , 0);
-        LocalDateTime endDate = LocalDateTime.of(year.intValue() , 12 , 31 , 23 , 59 , 59);
-
+    public List<MemberResponseDto> findByGeneration(Long generation){
         List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
 
-        for(Member member : memberRepository.findByJoinDateBetweenOrderByJoinDateDesc(startDate , endDate)){
+        // 해당 기수만 조회
+        for(Member member : memberRepository.findByGenerationOrderByGenerationDesc(generation)){
             memberResponseDtos.add(new MemberResponseDto(member));
         }
 
@@ -79,11 +76,15 @@ public class MemberService {
     // 입력에 이상이 있나 체크
     public boolean exceptionCheck(MemberRequestDto memberRequestDto){
         if(memberRequestDto.getBirthDay() == null || memberRequestDto.getBirthDay().getYear() > LocalDateTime.now().getYear()
-                || memberRequestDto.getStudentId() == null || memberRequestDto.getStudentId().isBlank()
-                || memberRequestDto.getName() == null || memberRequestDto.getName().isBlank()
-                || memberRequestDto.getMajor() == null || memberRequestDto.getMajor().isBlank()){
+                || checkNullBlank(memberRequestDto.getStudentId())
+                || checkNullBlank(memberRequestDto.getName())
+                || checkNullBlank(memberRequestDto.getMajor()))
             return true; // exception 처리
-        }
         return false; // 예외 안 걸림
+    }
+
+    public boolean checkNullBlank(String string){
+        if(string == null || string.isBlank()) return true;
+        return false;
     }
 }

@@ -2,13 +2,13 @@ package com.dogvelopers.dogvelopers.controller;
 
 import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
 import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
-import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
 import com.dogvelopers.dogvelopers.service.HofService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -22,9 +22,9 @@ public class HofController {
         return new ResponseEntity(hofService.findAll() , HttpStatus.OK);
     }
 
-    @GetMapping("{joinDate}") // 명예의 전당 기수별로 조회
-    public ResponseEntity<HofResponseDto> findByJoinDate(@PathVariable("joinDate") Long joinDate){
-        return new ResponseEntity(hofService.findByJoinDate(joinDate) , HttpStatus.OK);
+    @GetMapping("{generation}") // 명예의 전당 기수별로 조회
+    public ResponseEntity<HofResponseDto> findByGeneration(@PathVariable("generation") Long generation){
+        return new ResponseEntity(hofService.findByGeneration(generation) , HttpStatus.OK);
     }
 
     @PostMapping() // 명예의 전당 등록

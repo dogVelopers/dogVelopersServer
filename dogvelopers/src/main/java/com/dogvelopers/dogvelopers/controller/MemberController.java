@@ -1,10 +1,7 @@
 package com.dogvelopers.dogvelopers.controller;
 
-import com.dogvelopers.dogvelopers.controller.response.BasicResponse;
-import com.dogvelopers.dogvelopers.controller.response.CommonResponse;
 import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
-import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,12 +20,12 @@ public class MemberController {
         return new ResponseEntity(memberService.findAll() , HttpStatus.OK);
     }
 
-    @GetMapping("{joinDate}") // 기수로 검색
-    public ResponseEntity<MemberResponseDto> findByJoinDate(@PathVariable("joinDate") Long joinDate){
-        return new ResponseEntity(memberService.findByJoinDate(joinDate) , HttpStatus.OK);
+    @GetMapping("{generation}") // 기수로 검색
+    public ResponseEntity<MemberResponseDto> findByGeneration(@PathVariable("generation") Long generation){
+        return new ResponseEntity(memberService.findByGeneration(generation) , HttpStatus.OK);
     }
 
-    @PostMapping("{memberId}") // member 등록
+    @PostMapping() // member 등록
     public ResponseEntity<MemberResponseDto> save(MemberRequestDto memberRequestDto){
         return ResponseEntity.ok(memberService.save(memberRequestDto));
     }
