@@ -34,4 +34,10 @@ public class Hof {
         this.company = company;
         this.introduction =introduction;
     }
+
+    public void updateHof(Hof hof){
+        this.member = hof.getMember();
+        this.company = hof.getCompany();
+        this.introduction = hof.getIntroduction();
+    }
 }

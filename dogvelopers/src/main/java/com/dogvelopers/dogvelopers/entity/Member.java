@@ -1,5 +1,6 @@
 package com.dogvelopers.dogvelopers.entity;
 
+import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,14 +32,27 @@ public class Member {
     private String major;
 
     @Column(name = "BIRTH_DAY")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime birthDay;
 
+    @Column(name = "JOIN_DATE")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime joinDate;
+
     @Builder
-    public Member(String name , String studentId , String major , LocalDateTime birthDay){
+    public Member(String name , String studentId , String major , LocalDateTime birthDay , LocalDateTime joinDate){
         this.name = name;
         this.studentId = studentId;
         this.major = major;
         this.birthDay = birthDay;
+        this.joinDate = joinDate;
+    }
+
+    public void updateMember(Member member){
+        this.name = member.getName();
+        this.studentId = member.getStudentId();
+        this.major = member.getMajor();
+        this.birthDay = member.getBirthDay();
+        this.joinDate = member.getJoinDate();
     }
 }
