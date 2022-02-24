@@ -5,6 +5,7 @@ import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.entity.Project;
 import com.dogvelopers.dogvelopers.repository.ProjectRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +19,8 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public List<ProjectResponseDto> findAll() {
-        List<ProjectResponseDto> dtoList = projectRepository.findProjectsOrderByStartDate().stream()
+    public List<ProjectResponseDto> findAll(Pageable pageable) {
+        List<ProjectResponseDto> dtoList = projectRepository.findProjectsOrderByStartDate(pageable).stream()
                 .map(model -> new ProjectResponseDto(model))
                 .collect(Collectors.toList());
         return dtoList;
