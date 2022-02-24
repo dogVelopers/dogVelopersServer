@@ -1,22 +1,75 @@
 <!DOCTYPE html>
 <html xmlns:th = "https://thymeleaf.org">
+<head>
+<!--    <meta charset="UTF-8">-->
+    <title>Hof admin page</title>
+    <link th:href="@{/basic.css}" rel="stylesheet" />
+</head>
 <body>
 <a th:href="@{/admin/members}">MEMBER</a><br>
-<a th:href="@{/admin/projects}">PROJECT</a><br>
+<a th:href="@{/admin/projects}">PROJECT</a><br><br>
+<string>멤버 CRUD</string><br>
+<string><b>조회</b>는 해당 멤버의 ID만 입력하고 조회를 누르면 가능합니다.</string><br>
+<string><b>등록</b>은 ID를 제외하고 , 이외에 사항들을 입력하고 등록을 누르면 가능합니다.</string><br>
+<string><b>수정</b>은 해당 멤버의 ID를 포함한 모든 사항을 입력하고 수정을 누르면 가능합니다.</string><br>
+<string><b>삭제</b>는 해당 멤버의 ID만 입력하고 삭제를 누르면 가능합니다.</string><br><br>
 <div class = "container">
-    <form action = "/hofs" method = "post">
-        <div class = "form_group">
+    <form th:action = "@{/admin/hofs}" method = "post">
+        <div>
+
+            <label for = "id"> id</label>
+            <input type = "text" id = "id" name = "id"/><br><br>
+
             <label for = "memberId"> memberId</label>
-            <input type = "text" id = "memberId" name = "memberId" placeholder="멤버 아이디를 입력하시오"><br><br>
+            <input type = "text" id = "memberId" name = "memberId" th:value = "${hof.memberId}"/><br><br>
 
             <label for = "company"> company</label>
-            <input type = "text" id = "company" name = "company" placeholder="회사명을 입력하시오"><br><br>
+            <input type = "text" id = "company" name = "company" th:value = "${hof.company}"/><br><br>
 
             <label for = "introduction"> introduction</label>
-            <input type = "text" id = "introduction" name = "introduction" placeholder="소갯말을 입력하시오"><br><br>
+            <input type = "text" id = "introduction" name = "introduction" th:value = "${hof.introduction}"/><br><br>
+
         </div>
-        <button type ="submit">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "register">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "update">수정</button>
+        <button type = "submit" th:name = "cmd" th:value = "inquiry">조회</button>
+        <button type = "submit" th:name = "cmd" th:value = "delete">삭제</button>
     </form>
 </div>
+<br><br>
+<strong>DB 상태</strong><br><br>
+<strong>HOF</strong><br><br>
+<table>
+    <tr>
+        <th>id</th>
+        <th>memberId</th>
+        <th>company</th>
+        <th>introduction</th>
+    </tr>
+    <tr th:each="hofs : ${hofList}">
+        <td th:text="${hofs.id}"></td>
+        <td th:text="${hofs.memberId}"></td>
+        <td th:text="${hofs.company}"></td>
+        <td th:text="${hofs.introduction}"></td>
+    </tr>
+</table>
+<br><br>
+<strong>MEMBER</strong><br><br>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>studentId</th>
+        <th>major</th>
+        <th>birthDay</th>
+    </tr>
+    <tr th:each="members : ${memberList}">
+        <td th:text="${members.id}"></td>
+        <td th:text="${members.name}"></td>
+        <td th:text="${members.studentId}"></td>
+        <td th:text="${members.major}"></td>
+        <td th:text="${members.birthDay}"></td>
+    </tr>
+</table>
 </body>
 </html>

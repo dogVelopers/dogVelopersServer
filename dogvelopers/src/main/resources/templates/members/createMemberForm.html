@@ -1,29 +1,64 @@
 <!DOCTYPE html>
 <html xmlns:th = "https://thymeleaf.org">
+<head>
+<!--    <meta charset="UTF-8">-->
+    <title>Member admin page</title>
+    <link th:href="@{/basic.css}" rel="stylesheet" />
+</head>
 <body>
 <a th:href="@{/admin/hofs}">HOF</a><br>
-<a th:href="@{/admin/projects}">PROJECT</a><br>
+<a th:href="@{/admin/projects}">PROJECT</a><br><br>
+<string>멤버 CRUD</string><br>
+<string><b>조회</b>는 해당 멤버의 ID만 입력하고 조회를 누르면 가능합니다.</string><br>
+<string><b>등록</b>은 ID를 제외하고 , 이외에 사항들을 입력하고 등록을 누르면 가능합니다.</string><br>
+<string><b>수정</b>은 해당 멤버의 ID를 포함한 모든 사항을 입력하고 수정을 누르면 가능합니다.</string><br>
+<string><b>삭제</b>는 해당 멤버의 ID만 입력하고 삭제를 누르면 가능합니다.</string><br><br>
 <div class = "container">
-    <form action = "/members" method = "post">
-        <div class = "form_group">
+    <form th:action = "@{/admin/members}" method = "post">
+        <div>
+
+            <label for = "id"> id</label>
+            <input type = "text" id = "id" name = "id"/><br><br>
+
             <label for = "name"> name</label>
-            <input type = "text" id = "name" name = "name" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "name" name = "name" th:value = "${member.name}"/><br><br>
 
             <label for = "studentId"> studentId</label>
-            <input type = "text" id = "studentId" name = "studentId" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "studentId" name = "studentId" th:value = "${member.studentId}"/><br><br>
 
             <label for = "major"> major</label>
-            <input type = "text" id = "major" name = "major" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "major" name = "major" th:value = "${member.major}"/><br><br>
 
             <label for = "generation"> generation</label>
-            <input type = "text" id = "generation" name = "generation" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "generation" name = "generation" th:value = "${member.generation}"/><br><br>
 
             <label for = "birthday"> birthDay</label>
-            <input type = "date" id = "birthday" name = "birthDay" placeholder="입력하시오"><br><br>
+            <input type = "date" id = "birthday" name = "birthDay" th:value = "${member.birthDay}"/><br><br>
 
         </div>
-        <button type ="submit">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "register">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "update">수정</button>
+        <button type = "submit" th:name = "cmd" th:value = "inquiry">조회</button>
+        <button type = "submit" th:name = "cmd" th:value = "delete">삭제</button>
     </form>
 </div>
+<br><br>
+<strong>DB 상태</strong><br><br>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>studentId</th>
+        <th>major</th>
+        <th>birthDay</th>
+    </tr>
+    <tr th:each="members : ${memberList}">
+        <td th:text="${members.id}"></td>
+        <td th:text="${members.name}"></td>
+        <td th:text="${members.studentId}"></td>
+        <td th:text="${members.major}"></td>
+        <td th:text="${members.birthDay}"></td>
+    </tr>
+</table>
 </body>
 </html>

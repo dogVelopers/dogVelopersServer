@@ -80,6 +80,7 @@ public class HofService {
                 .orElseThrow(() -> {throw new CustomException(NOT_FOUND_INFO);});
 
         Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        hofRequestDto.setMember(member); // member등록
         hof.updateHof(hofRequestDto.toEntity());
 
         return new HofResponseDto(hofRepository.save(hof));
