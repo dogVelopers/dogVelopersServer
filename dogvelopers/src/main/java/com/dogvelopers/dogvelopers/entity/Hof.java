@@ -15,11 +15,11 @@ public class Hof {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "HOF_ID")
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "ID")
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @Column(name = "COMPANY")

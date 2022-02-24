@@ -37,6 +37,8 @@ public class MemberController {
 
     @DeleteMapping("{memberId}") // member 삭제
     public ResponseEntity delete(@PathVariable("memberId") Long id) {
+        System.out.println(id);
+        System.out.println("fucking");
         memberService.delete(id);
         return ResponseEntity.noContent()
                 .build();

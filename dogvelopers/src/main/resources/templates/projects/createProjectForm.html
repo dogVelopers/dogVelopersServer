@@ -1,29 +1,61 @@
 <!DOCTYPE html>
 <html xmlns:th = "https://thymeleaf.org">
+<head>
+<!--    <meta charset="UTF-8">-->
+    <title>Project admin page</title>
+    <link th:href="@{/basic.css}" rel="stylesheet" />
+</head>
 <body>
-
 <a th:href="@{/admin/hofs}">HOF</a><br>
-<a th:href="@{/admin/members}">MEMBER</a><br>
-
+<a th:href="@{/admin/members}">MEMBER</a><br><br>
+<string>멤버 CRUD</string><br>
+<string><b>조회</b>는 해당 멤버의 ID만 입력하고 조회를 누르면 가능합니다.</string><br>
+<string><b>등록</b>은 ID를 제외하고 , 이외에 사항들을 입력하고 등록을 누르면 가능합니다.</string><br>
+<string><b>수정</b>은 해당 멤버의 ID를 포함한 모든 사항을 입력하고 수정을 누르면 가능합니다.</string><br>
+<string><b>삭제</b>는 해당 멤버의 ID만 입력하고 삭제를 누르면 가능합니다.</string><br><br>
 <div class = "container">
-    <form action = "/projects" method = "post">
-        <div class = "form_group">
+    <form th:action = "@{/admin/projects}" method = "post">
+        <div>
+
+            <label for = "id"> id</label>
+            <input type = "text" id = "id" name = "id"/><br><br>
+
             <label for = "name"> name</label>
-            <input type = "text" id = "name" name = "name" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "name" name = "name" th:value = "${project.name}"/><br><br>
 
             <label for = "description"> description</label>
-            <input type = "text" id = "description" name = "description" placeholder="입력하시오"><br><br>
+            <input type = "text" id = "description" name = "description" th:value = "${project.description}"/><br><br>
 
             <label for = "startDate"> startDate</label>
-            <input type = "date" id = "startDate" name = "startDate" placeholder="입력하시오"><br><br>
+            <input type = "date" id = "startDate" name = "startDate" th:value = "${project.startDate}"/><br><br>
 
             <label for = "endDate"> endDate</label>
-            <input type = "date" id = "endDate" name = "endDate" placeholder="입력하시오"><br><br>
+            <input type = "date" id = "endDate" name = "endDate" th:value = "${project.endDate}"/><br><br>
 
         </div>
-        <button type ="submit">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "register">등록</button>
+        <button type ="submit" th:name = "cmd" th:value = "update">수정</button>
+        <button type = "submit" th:name = "cmd" th:value = "inquiry">조회</button>
+        <button type = "submit" th:name = "cmd" th:value = "delete">삭제</button>
     </form>
 </div>
-
+<br><br>
+<strong>DB 상태</strong><br><br>
+<table>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>description</th>
+        <th>startDate</th>
+        <th>endDate</th>
+    </tr>
+    <tr th:each="projects : ${projectList}">
+        <td th:text="${projects.id}"></td>
+        <td th:text="${projects.name}"></td>
+        <td th:text="${projects.description}"></td>
+        <td th:text="${projects.startDate}"></td>
+        <td th:text="${projects.endDate}"></td>
+    </tr>
+</table>
 </body>
 </html>
