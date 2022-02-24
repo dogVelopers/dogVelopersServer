@@ -8,7 +8,6 @@ import com.dogvelopers.dogvelopers.service.HofService;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,7 +28,6 @@ import java.util.List;
 
 //@SpringBootTest
 //@Transactional
-@RunWith(SpringRunner.class)
 @WebMvcTest(HofController.class)
 class HofControllerTest {
 
@@ -47,8 +45,8 @@ class HofControllerTest {
         //then
 //        assertEquals(HttpStatus.OK , hofs.getStatusCode());
 
-        mvc.perform(get("hofs"))
-                .andExpect(status().isOk());
+//        mvc.perform(get("hofs"))
+//                .andExpect(status().isOk());
     }
 
     @Test

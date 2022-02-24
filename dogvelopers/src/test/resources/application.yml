@@ -1,18 +1,30 @@
 spring:
+  h2:
+    console:
+      enabled: true
+
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dvtest?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
     username: sa
     password:
-  mvc:
-    hiddentmethod:
-      filter:
-        enable: true
 
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: true
 
-server:
-  port: 8088
+logging.level:
+  org.hibernate.SQL: debug
+#  org.hibernate.type: trace
+
+file:
+  dir: /Users/hyeonic/project/file/
+
+jwt:
+  header: Authorization
+  secret: c2todWVkaW4tdGVzdC1za2h1ZWRpbi10ZXN0LXNraHVlZGluLXRlc3Qtc2todWVkaW4tdGVzdC1za2h1ZWRpbi10ZXN0
+  token-validity-in-seconds: 1800
