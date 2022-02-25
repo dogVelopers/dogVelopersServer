@@ -29,14 +29,14 @@ public class MemberController {
     @PostMapping() // member 등록
     public ResponseEntity<MemberResponseDto> save(
             @RequestPart(value = "file" , required = false) MultipartFile file, // 이것 역시 필수 x
-            @RequestPart(value = "memberRequestDto") MemberRequestDto memberRequestDto) {
+            MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(memberService.save(file , memberRequestDto));
     }
 
     @PutMapping("{memberId}") // member 수정
     public ResponseEntity<MemberResponseDto> update(@PathVariable("memberId") Long id,
                                                     @RequestPart(value = "file" , required = false) MultipartFile file, // 이것 역시 필수 x
-                                                    @RequestPart(value = "memberRequestDto") MemberRequestDto memberRequestDto) {
+                                                    MemberRequestDto memberRequestDto) {
         return new ResponseEntity(memberService.update(id, file , memberRequestDto), HttpStatus.OK);
     }
 

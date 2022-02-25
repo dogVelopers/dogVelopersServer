@@ -13,13 +13,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 
-import static com.dogvelopers.dogvelopers.enumType.ErrorCode.BAD_REQUEST_INFO;
-import static com.dogvelopers.dogvelopers.enumType.ErrorCode.NOT_FOUND_IMAGE_FILE;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import static com.dogvelopers.dogvelopers.enumType.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +53,9 @@ public class MemberService {
 
     @Transactional
     public MemberResponseDto findById(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
         return new MemberResponseDto(member);
     }
 
@@ -68,13 +69,12 @@ public class MemberService {
     @Transactional(rollbackFor = Exception.class)
     public MemberResponseDto update(Long id, MultipartFile file , MemberRequestDto memberRequestDto) {
 
-        // image 가 비었을 때 예외 발생
-        if (file.isEmpty()) throw new CustomException(NOT_FOUND_IMAGE_FILE);
-
         // id 를 받아서 , 해당 객체를 뽑아서 , 해당 id 로 레코드의 내용을 바꾼다.
         if (exceptionCheck(memberRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
 
-        Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
 
         // 파일이 비어있으면 그대로 , 아니면 s3 에 저장하고 url 가져옴
         memberRequestDto.setImageUrl(file.isEmpty() ? member.getImageUrl() : fileUploadService.uploadImage(file));
@@ -85,7 +85,9 @@ public class MemberService {
 
     @Transactional
     public void delete(Long id) {
-        Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Member member = memberRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
         memberRepository.delete(member);
     }
 
@@ -98,7 +100,8 @@ public class MemberService {
         if (memberRequestDto.getBirthDay() == null || memberRequestDto.getBirthDay().getYear() > LocalDateTime.now().getYear()
                 || checkNullBlank(memberRequestDto.getStudentId())
                 || checkNullBlank(memberRequestDto.getName())
-                || checkNullBlank(memberRequestDto.getMajor()))
+                || checkNullBlank(memberRequestDto.getMajor())
+                || memberRequestDto == null)
             return true; // exception 처리
         return false; // 예외 안 걸림
     }
