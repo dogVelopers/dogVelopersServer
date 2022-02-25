@@ -5,13 +5,16 @@ import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
 import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
+import com.dogvelopers.dogvelopers.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityNotFoundException;
 
 import static com.dogvelopers.dogvelopers.enumType.ErrorCode.BAD_REQUEST_INFO;
+import static com.dogvelopers.dogvelopers.enumType.ErrorCode.NOT_FOUND_IMAGE_FILE;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,27 +26,27 @@ import java.util.stream.Collectors;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final FileUploadService fileUploadService;
 
     @Transactional(rollbackFor = Exception.class)
-    public MemberResponseDto save(MemberRequestDto memberRequestDto) {
+    public MemberResponseDto save(MultipartFile file , MemberRequestDto memberRequestDto) {
+
+        // image 가 비었을 때 예외 발생
+        if (file.isEmpty()) throw new CustomException(NOT_FOUND_IMAGE_FILE);
 
         // 생일이 잘못 되어 있고 , 이름 , 학번 , 전공 입력이 안되어있으면
         if (exceptionCheck(memberRequestDto)) {
             throw new CustomException(BAD_REQUEST_INFO); // exception 처리
         }
 
+        // s3 에다가 image 파일 저장하고 , 받은 url 을 저장
+        memberRequestDto.setImageUrl(fileUploadService.uploadImage(file));
+
         return new MemberResponseDto(memberRepository.save(memberRequestDto.toEntity()));
     }
 
     @Transactional
     public List<MemberResponseDto> findAll() { // 기수의 역순으로 반환되게 끔 설정
-//        List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
-//
-//        for(Member member : memberRepository.findAllByOrderByGenerationDesc()){
-//            memberResponseDtos.add(new MemberResponseDto(member));
-//        }
-
-//        return memberResponseDtos;
         return memberRepository.findAllByOrderByGenerationDesc().stream()
                 .map(member -> new MemberResponseDto(member))
                 .collect(Collectors.toList());
@@ -57,22 +60,26 @@ public class MemberService {
 
     @Transactional
     public List<MemberResponseDto> findByGeneration(Long generation) {
-        List<MemberResponseDto> memberResponseDtos = new ArrayList<>();
-
-        // 해당 기수만 조회
-        for (Member member : memberRepository.findByGenerationOrderByGenerationDesc(generation)) {
-            memberResponseDtos.add(new MemberResponseDto(member));
-        }
-
-        return memberResponseDtos;
+        return memberRepository.findByGenerationOrderByGenerationDesc(generation).stream()
+                .map(member -> new MemberResponseDto(member))
+                .collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public MemberResponseDto update(Long id, MemberRequestDto memberRequestDto) {
+    public MemberResponseDto update(Long id, MultipartFile file , MemberRequestDto memberRequestDto) {
+
+        // image 가 비었을 때 예외 발생
+        if (file.isEmpty()) throw new CustomException(NOT_FOUND_IMAGE_FILE);
+
         // id 를 받아서 , 해당 객체를 뽑아서 , 해당 id 로 레코드의 내용을 바꾼다.
         if (exceptionCheck(memberRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
+
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        // 파일이 비어있으면 그대로 , 아니면 s3 에 저장하고 url 가져옴
+        memberRequestDto.setImageUrl(file.isEmpty() ? member.getImageUrl() : fileUploadService.uploadImage(file));
         member.updateMember(memberRequestDto.toEntity());
+
         return new MemberResponseDto(memberRepository.save(member));
     }
 

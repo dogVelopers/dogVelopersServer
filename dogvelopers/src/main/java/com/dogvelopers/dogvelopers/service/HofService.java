@@ -35,13 +35,6 @@ public class HofService {
 
     @Transactional
     public List<HofResponseDto> findAll() {
-//        List<HofResponseDto> hofResponseDtos = new ArrayList<>();
-//        List<Hof> hofs = hofRepository.findAll();
-//        Collections.sort(hofs , new SortByGeneration()); // 기수 순으로 정렬
-//        for(Hof hof : hofs){
-//            hofResponseDtos.add(new HofResponseDto(hof));
-//        }
-//        return hofResponseDtos;
 
         return hofRepository.findAll().stream()
                 .sorted(new SortByGeneration())
@@ -78,6 +71,7 @@ public class HofService {
         }
 
         hofRequestDto.setMember(memberRepository.findById(hofRequestDto.getMemberId()).get());
+
         return new HofResponseDto(hofRepository.save(hofRequestDto.toEntity()));
     }
 
@@ -94,6 +88,7 @@ public class HofService {
                 });
 
         Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
         hofRequestDto.setMember(member); // member등록
         hof.updateHof(hofRequestDto.toEntity());
 

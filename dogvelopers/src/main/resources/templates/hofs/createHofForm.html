@@ -62,6 +62,7 @@
         <th>studentId</th>
         <th>major</th>
         <th>birthDay</th>
+        <th>imageUrl</th>
     </tr>
     <tr th:each="members : ${memberList}">
         <td th:text="${members.id}"></td>
@@ -69,6 +70,7 @@
         <td th:text="${members.studentId}"></td>
         <td th:text="${members.major}"></td>
         <td th:text="${members.birthDay}"></td>
+        <td th:text="${members.imageUrl}"></td>
     </tr>
 </table>
 </body>

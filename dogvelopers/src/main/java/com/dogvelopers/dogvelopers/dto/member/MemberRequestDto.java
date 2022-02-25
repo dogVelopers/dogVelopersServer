@@ -24,6 +24,7 @@ public class MemberRequestDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDay;
 
+    private String imageUrl;
 
     @Builder
     public Member toEntity(){
@@ -33,6 +34,7 @@ public class MemberRequestDto {
                 .major(major)
                 .birthDay(birthDay)
                 .generation(generation)
+                .imageUrl(imageUrl)
                 .build();
     }
 }

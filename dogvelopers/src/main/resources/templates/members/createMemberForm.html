@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th = "https://thymeleaf.org">
 <head>
-<!--    <meta charset="UTF-8">-->
+    <meta charset="UTF-8">
     <title>Member admin page</title>
     <link th:href="@{/basic.css}" rel="stylesheet" />
 </head>
@@ -14,7 +14,7 @@
 <string><b>수정</b>은 해당 멤버의 ID를 포함한 모든 사항을 입력하고 수정을 누르면 가능합니다.</string><br>
 <string><b>삭제</b>는 해당 멤버의 ID만 입력하고 삭제를 누르면 가능합니다.</string><br><br>
 <div class = "container">
-    <form th:action = "@{/admin/members}" method = "post">
+    <form th:action = "@{/admin/members}" enctype="multipart/form-data" method = "post">
         <div>
 
             <label for = "id"> id</label>
@@ -35,6 +35,9 @@
             <label for = "birthday"> birthDay</label>
             <input type = "date" id = "birthday" name = "birthDay" th:value = "${member.birthDay}"/><br><br>
 
+            <label for = "file"> file</label>
+            <input type = "file" id = "file" name = "file"/><br><br>
+
         </div>
         <button type ="submit" th:name = "cmd" th:value = "register">등록</button>
         <button type ="submit" th:name = "cmd" th:value = "update">수정</button>
@@ -50,14 +53,18 @@
         <th>name</th>
         <th>studentId</th>
         <th>major</th>
+        <th>generation</th>
         <th>birthDay</th>
+        <th>imageUrl</th>
     </tr>
     <tr th:each="members : ${memberList}">
         <td th:text="${members.id}"></td>
         <td th:text="${members.name}"></td>
         <td th:text="${members.studentId}"></td>
         <td th:text="${members.major}"></td>
+        <td th:text="${members.generation}"></td>
         <td th:text="${members.birthDay}"></td>
+        <td th:text="${members.imageUrl}"></td>
     </tr>
 </table>
 </body>
