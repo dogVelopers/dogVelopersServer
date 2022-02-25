@@ -4,10 +4,8 @@ import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -30,9 +28,11 @@ public class AdminMemberController {
     }
 
     @PostMapping(params = "cmd=register") // 등록
-    public ModelAndView registerMember(MemberRequestDto memberRequestDto) {
+    public ModelAndView registerMember(
+            @RequestPart(value = "file" , required = false) MultipartFile file ,
+            MemberRequestDto memberRequestDto) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
-        memberService.save(memberRequestDto);
+        memberService.save(file , memberRequestDto);
         mvc.addObject("member", new MemberRequestDto());
         memberMvcAddObject(mvc);
         return mvc; //등록화면으로 다시 넘어감
@@ -51,9 +51,11 @@ public class AdminMemberController {
     }
 
     @PostMapping(params = "cmd=update") // 업데이트
-    public ModelAndView updateMember(@RequestParam("id") Long memberId, MemberRequestDto memberRequestDto) {
+    public ModelAndView updateMember(@RequestParam("id") Long memberId ,
+                                     @RequestPart(value = "file" , required = false) MultipartFile file ,
+                                     MemberRequestDto memberRequestDto) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
-        memberService.update(memberId, memberRequestDto); // update
+        memberService.update(memberId, file , memberRequestDto); // update
         mvc.addObject("member", new MemberRequestDto());
         memberMvcAddObject(mvc);
         return mvc; // 다시 편집 가능하도록

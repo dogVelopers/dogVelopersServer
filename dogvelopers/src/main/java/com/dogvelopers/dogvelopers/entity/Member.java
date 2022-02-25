@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -38,14 +37,18 @@ public class Member {
     @DateTimeFormat(pattern = "yyyy-MM-dd") // 한번 이렇게 해보자.
     private LocalDate birthDay;
 
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
+
 
     @Builder
-    public Member(String name , String studentId , String major , LocalDate birthDay , Long generation){
+    public Member(String name , String studentId , String major , LocalDate birthDay , Long generation , String imageUrl){
         this.name = name;
         this.studentId = studentId;
         this.major = major;
         this.birthDay = birthDay;
         this.generation = generation;
+        this.imageUrl = imageUrl;
     }
 
     public void updateMember(Member member){
@@ -54,5 +57,6 @@ public class Member {
         this.major = member.getMajor();
         this.birthDay = member.getBirthDay();
         this.generation = member.getGeneration();
+        this.imageUrl = member.getImageUrl();
     }
 }

@@ -7,10 +7,8 @@ import com.dogvelopers.dogvelopers.service.HofService;
 import com.dogvelopers.dogvelopers.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
@@ -55,7 +53,7 @@ public class AdminHofController {
         return mvc;
     }
 
-    @PostMapping(value = "/hofs", params = "cmd=register") // 등록
+    @PostMapping(params = "cmd=register") // 등록
     public ModelAndView registerHof(HofRequestDto hofRequestDto) {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
         hofService.save(hofRequestDto);
@@ -76,7 +74,7 @@ public class AdminHofController {
     @PostMapping(params = "cmd=update") // 업데이트
     public ModelAndView updateHof(@RequestParam("id") Long hofId, HofRequestDto hofRequestDto) {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
-        hofService.update(hofId, hofRequestDto); // update
+        hofService.update(hofId , hofRequestDto); // update
         mvc.addObject("hof", new HofAdminDto());
         hofMvcAddObject(mvc);
         return mvc; // 다시 편집 가능하도록

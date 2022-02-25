@@ -13,6 +13,7 @@ public class MemberResponseDto {
     private String major;
     private LocalDate birthDay;
     private Long generation;
+    private String imageUrl;
 
     public MemberResponseDto(Member member){
         this.id = member.getId();
@@ -21,5 +22,6 @@ public class MemberResponseDto {
         this.major = member.getMajor();
         this.birthDay = member.getBirthDay();
         this.generation = member.getGeneration();
+        this.imageUrl = member.getImageUrl();
     }
 }

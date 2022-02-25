@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("members")
@@ -26,19 +27,21 @@ public class MemberController {
     }
 
     @PostMapping() // member 등록
-    public ResponseEntity<MemberResponseDto> save(MemberRequestDto memberRequestDto) {
-        return ResponseEntity.ok(memberService.save(memberRequestDto));
+    public ResponseEntity<MemberResponseDto> save(
+            @RequestPart(value = "file" , required = false) MultipartFile file, // 이것 역시 필수 x
+            @RequestPart(value = "memberRequestDto") MemberRequestDto memberRequestDto) {
+        return ResponseEntity.ok(memberService.save(file , memberRequestDto));
     }
 
     @PutMapping("{memberId}") // member 수정
-    public ResponseEntity<MemberResponseDto> update(@PathVariable("memberId") Long id, MemberRequestDto memberRequestDto) {
-        return new ResponseEntity(memberService.update(id, memberRequestDto), HttpStatus.OK);
+    public ResponseEntity<MemberResponseDto> update(@PathVariable("memberId") Long id,
+                                                    @RequestPart(value = "file" , required = false) MultipartFile file, // 이것 역시 필수 x
+                                                    @RequestPart(value = "memberRequestDto") MemberRequestDto memberRequestDto) {
+        return new ResponseEntity(memberService.update(id, file , memberRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{memberId}") // member 삭제
     public ResponseEntity delete(@PathVariable("memberId") Long id) {
-        System.out.println(id);
-        System.out.println("fucking");
         memberService.delete(id);
         return ResponseEntity.noContent()
                 .build();

@@ -42,7 +42,6 @@ public class AdminProjectController {
     @PostMapping(params = "cmd=register") // 등록
     public ModelAndView registerProject(ProjectRequestDto projectRequestDto) {
         ProjectSaveRequestDto projectSaveRequestDto = createProjectSaveRequestDto(projectRequestDto);
-        System.out.println(projectSaveRequestDto.getDescription() + " " + projectSaveRequestDto.getStartDate() + " " + projectSaveRequestDto.getEndDate());
         ModelAndView mvc = new ModelAndView("projects/createProjectForm");
         projectService.save(projectSaveRequestDto);
         mvc.addObject("project", new ProjectRequestDto());
