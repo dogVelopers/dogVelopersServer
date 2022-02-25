@@ -16,23 +16,23 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseEntity<MemberResponseDto> findAll(){ // member 전체 조회
-        return new ResponseEntity(memberService.findAll() , HttpStatus.OK);
+    public ResponseEntity<MemberResponseDto> findAll() { // member 전체 조회
+        return new ResponseEntity(memberService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("{generation}") // 기수로 검색
-    public ResponseEntity<MemberResponseDto> findByGeneration(@PathVariable("generation") Long generation){
-        return new ResponseEntity(memberService.findByGeneration(generation) , HttpStatus.OK);
+    public ResponseEntity<MemberResponseDto> findByGeneration(@PathVariable("generation") Long generation) {
+        return new ResponseEntity(memberService.findByGeneration(generation), HttpStatus.OK);
     }
 
     @PostMapping() // member 등록
-    public ResponseEntity<MemberResponseDto> save(MemberRequestDto memberRequestDto){
+    public ResponseEntity<MemberResponseDto> save(MemberRequestDto memberRequestDto) {
         return ResponseEntity.ok(memberService.save(memberRequestDto));
     }
 
     @PutMapping("{memberId}") // member 수정
     public ResponseEntity<MemberResponseDto> update(@PathVariable("memberId") Long id, MemberRequestDto memberRequestDto) {
-        return new ResponseEntity(memberService.update(id, memberRequestDto) , HttpStatus.OK);
+        return new ResponseEntity(memberService.update(id, memberRequestDto), HttpStatus.OK);
     }
 
     @DeleteMapping("{memberId}") // member 삭제

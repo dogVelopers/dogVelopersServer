@@ -21,7 +21,7 @@ public class AdminMemberController {
         mvc.addObject("memberList", memberService.findAll());
     }
 
-    @GetMapping("members") // 처음 화면
+    @GetMapping() // 처음 화면
     public ModelAndView setMember() {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
         mvc.addObject("member", new MemberRequestDto());
@@ -29,7 +29,7 @@ public class AdminMemberController {
         return mvc;
     }
 
-    @PostMapping(value = "members", params = "cmd=register") // 등록
+    @PostMapping(params = "cmd=register") // 등록
     public ModelAndView registerMember(MemberRequestDto memberRequestDto) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
         memberService.save(memberRequestDto);
@@ -38,7 +38,7 @@ public class AdminMemberController {
         return mvc; //등록화면으로 다시 넘어감
     }
 
-    @PostMapping(value = "/members", params = "cmd=inquiry") // 조회
+    @PostMapping(params = "cmd=inquiry") // 조회
     public ModelAndView inquiryMember(@RequestParam("id") Long memberId) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
         if (!memberService.existsById(memberId)) {
@@ -50,7 +50,7 @@ public class AdminMemberController {
         return mvc;
     }
 
-    @PostMapping(value = "members", params = "cmd=update") // 업데이트
+    @PostMapping(params = "cmd=update") // 업데이트
     public ModelAndView updateMember(@RequestParam("id") Long memberId, MemberRequestDto memberRequestDto) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
         memberService.update(memberId, memberRequestDto); // update
@@ -60,7 +60,7 @@ public class AdminMemberController {
     }
 
 
-    @PostMapping(value = "members", params = "cmd=delete") // 삭제
+    @PostMapping(params = "cmd=delete") // 삭제
     public ModelAndView deleteMember(@RequestParam("id") Long memberId) {
         ModelAndView mvc = new ModelAndView("members/createMemberForm");
         memberService.delete(memberId);

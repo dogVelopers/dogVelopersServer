@@ -47,7 +47,7 @@ public class AdminHofController {
         mvc.addObject("memberList", memberService.findAll());
     }
 
-    @GetMapping("/hofs") // 처음 화면
+    @GetMapping() // 처음 화면
     public ModelAndView setHof() {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
         mvc.addObject("hof", new HofAdminDto());
@@ -64,7 +64,7 @@ public class AdminHofController {
         return mvc; //등록화면으로 다시 넘어감
     }
 
-    @PostMapping(value = "/hofs", params = "cmd=inquiry") // 조회
+    @PostMapping(params = "cmd=inquiry") // 조회
     public ModelAndView inquiryHof(@RequestParam("id") Long hofId) {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
         if (!hofService.existsById(hofId)) mvc.addObject("hof", new HofAdminDto()); // 없으면 빈 객체로
@@ -73,7 +73,7 @@ public class AdminHofController {
         return mvc;
     }
 
-    @PostMapping(value = "/hofs", params = "cmd=update") // 업데이트
+    @PostMapping(params = "cmd=update") // 업데이트
     public ModelAndView updateHof(@RequestParam("id") Long hofId, HofRequestDto hofRequestDto) {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
         hofService.update(hofId, hofRequestDto); // update
@@ -83,7 +83,7 @@ public class AdminHofController {
     }
 
 
-    @PostMapping(value = "/hofs", params = "cmd=delete") // 삭제
+    @PostMapping(params = "cmd=delete") // 삭제
     public ModelAndView deleteHof(@RequestParam("id") Long hofId) {
         ModelAndView mvc = new ModelAndView("hofs/createHofForm");
         hofService.delete(hofId);

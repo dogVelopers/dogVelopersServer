@@ -9,6 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface HofRepository extends JpaRepository<Hof, Long>{
+
     boolean existsByMemberId(Long memberId);
+
     Optional<Hof> findByMemberId(Long memberId);
+
 }
