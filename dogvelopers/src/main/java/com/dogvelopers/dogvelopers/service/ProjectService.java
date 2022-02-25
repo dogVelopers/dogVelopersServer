@@ -26,6 +26,13 @@ public class ProjectService {
         return dtoList;
     }
 
+    public List<ProjectResponseDto> findAll() {
+        List<ProjectResponseDto> dtoList = projectRepository.findProjectsOrderByStartDate().stream()
+                .map(model -> new ProjectResponseDto(model))
+                .collect(Collectors.toList());
+        return dtoList;
+    }
+
     public ProjectResponseDto findById(Long id) {
         Project project = projectRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return new ProjectResponseDto(project);
@@ -49,4 +56,7 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
+    public boolean existsById(Long id) {
+        return projectRepository.existsById(id);
+    }
 }

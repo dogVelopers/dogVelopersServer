@@ -16,6 +16,7 @@ import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.dogvelopers.dogvelopers.enumType.ErrorCode.*;
 
@@ -27,41 +28,52 @@ public class HofService {
     private final MemberRepository memberRepository;
 
     @Transactional
-    public List<HofResponseDto> findAll(){
-        List<HofResponseDto> hofResponseDtos = new ArrayList<>();
-        List<Hof> hofs = hofRepository.findAll();
-        Collections.sort(hofs , new SortByGeneration()); // 기수 순으로 정렬
-        for(Hof hof : hofs){
-            hofResponseDtos.add(new HofResponseDto(hof));
-        }
-        return hofResponseDtos;
+    public HofResponseDto findById(Long id) {
+        Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return new HofResponseDto(hof);
     }
 
     @Transactional
-    public List<HofResponseDto> findByGeneration(Long generation){ // 기수 별로 조회
+    public List<HofResponseDto> findAll() {
+//        List<HofResponseDto> hofResponseDtos = new ArrayList<>();
+//        List<Hof> hofs = hofRepository.findAll();
+//        Collections.sort(hofs , new SortByGeneration()); // 기수 순으로 정렬
+//        for(Hof hof : hofs){
+//            hofResponseDtos.add(new HofResponseDto(hof));
+//        }
+//        return hofResponseDtos;
+
+        return hofRepository.findAll().stream()
+                .sorted(new SortByGeneration())
+                .map(hof -> new HofResponseDto(hof))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<HofResponseDto> findByGeneration(Long generation) { // 기수 별로 조회
         List<HofResponseDto> hofResponseDtos = new ArrayList<>();
         List<Hof> hofs = hofRepository.findAll();
-        Collections.sort(hofs , new SortByGeneration());
-        for(Hof hof : hofs){
-            if(hof.getMember().getGeneration() == generation) hofResponseDtos.add(new HofResponseDto(hof));
+        Collections.sort(hofs, new SortByGeneration());
+        for (Hof hof : hofs) {
+            if (hof.getMember().getGeneration() == generation) hofResponseDtos.add(new HofResponseDto(hof));
         }
         return hofResponseDtos;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HofResponseDto save(HofRequestDto hofRequestDto){
+    public HofResponseDto save(HofRequestDto hofRequestDto) {
 
         // introduction , company 가 비어있거나 , null 인 경우 예외 발생
-        if(exceptionCheck(hofRequestDto)) {
+        if (exceptionCheck(hofRequestDto)) {
             throw new CustomException(BAD_REQUEST_INFO);
         }
         // member로 등록되지 않은 사람을 등록하였을 때 예외 발생
-        if(!memberRepository.existsById(hofRequestDto.getMemberId())){
+        if (!memberRepository.existsById(hofRequestDto.getMemberId())) {
             throw new CustomException(NOT_FOUND_INFO);
         }
 
         // 이미 명예의 전당에 등록되어 있는 사람이면 예외 발생
-        if(hofRepository.existsByMemberId(hofRequestDto.getMemberId())){
+        if (hofRepository.existsByMemberId(hofRequestDto.getMemberId())) {
             throw new CustomException(DUPLICATE_INFO);
         }
 
@@ -70,14 +82,16 @@ public class HofService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public HofResponseDto update(Long id , HofRequestDto hofRequestDto){
+    public HofResponseDto update(Long id, HofRequestDto hofRequestDto) {
 
         // introduction , company 가 비어있거나 , null 인 경우 예외 발생
-        if(exceptionCheck(hofRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
+        if (exceptionCheck(hofRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
 
         // member로 등록되지 않은 사람을 등록하였을 때 예외 발생
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> {throw new CustomException(NOT_FOUND_INFO);});
+                .orElseThrow(() -> {
+                    throw new CustomException(NOT_FOUND_INFO);
+                });
 
         Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         hofRequestDto.setMember(member); // member등록
@@ -87,20 +101,25 @@ public class HofService {
     }
 
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id) {
         // id를 이용해서 지우면 됨
         Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         memberRepository.delete(member);
     }
 
+    @Transactional
+    public boolean existsById(Long id) {
+        return hofRepository.existsById(id);
+    }
+
     // exception 체크
-    public boolean exceptionCheck(HofRequestDto hofRequestDto){
-        if(checkNullBlank(hofRequestDto.getIntroduction()) || checkNullBlank(hofRequestDto.getCompany())) return true;
+    public boolean exceptionCheck(HofRequestDto hofRequestDto) {
+        if (checkNullBlank(hofRequestDto.getIntroduction()) || checkNullBlank(hofRequestDto.getCompany())) return true;
         return false;
     }
 
-    public boolean checkNullBlank(String string){
-        if(string == null || string.isBlank()) return true;
+    public boolean checkNullBlank(String string) {
+        if (string == null || string.isBlank()) return true;
         return false;
     }
 }

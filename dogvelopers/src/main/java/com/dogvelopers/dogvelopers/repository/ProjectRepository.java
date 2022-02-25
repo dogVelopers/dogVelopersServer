@@ -14,4 +14,9 @@ public interface ProjectRepository extends JpaRepository<Project , Long> {
             "order by p.startDate")
     List<Project> findProjectsOrderByStartDate(Pageable pageable);
 
+    @Query("select p " +
+            "from Project p " +
+            "order by p.startDate")
+    List<Project> findProjectsOrderByStartDate();
+
 }
