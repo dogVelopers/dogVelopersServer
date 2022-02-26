@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,7 +28,9 @@ public class HofService {
 
     @Transactional
     public HofResponseDto findById(Long id) {
-        Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Hof hof = hofRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
         return new HofResponseDto(hof);
     }
 
@@ -82,12 +83,14 @@ public class HofService {
         if (exceptionCheck(hofRequestDto)) throw new CustomException(BAD_REQUEST_INFO);
 
         // member로 등록되지 않은 사람을 등록하였을 때 예외 발생
-        Member member = memberRepository.findById(id)
+        Member member = memberRepository.findById(hofRequestDto.getMemberId())
                 .orElseThrow(() -> {
                     throw new CustomException(NOT_FOUND_INFO);
                 });
 
-        Hof hof = hofRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        Hof hof = hofRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
 
         hofRequestDto.setMember(member); // member등록
         hof.updateHof(hofRequestDto.toEntity());
@@ -98,8 +101,10 @@ public class HofService {
     @Transactional
     public void delete(Long id) {
         // id를 이용해서 지우면 됨
-        Member member = memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        memberRepository.delete(member);
+        Hof hof = hofRepository.findById(id).orElseThrow(
+                () -> {throw new CustomException(NOT_FOUND_INFO);}
+        );
+        hofRepository.delete(hof);
     }
 
     @Transactional
