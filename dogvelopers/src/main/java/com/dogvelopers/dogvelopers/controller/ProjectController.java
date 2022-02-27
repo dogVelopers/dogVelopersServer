@@ -7,6 +7,7 @@ import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("projects")
 @RequiredArgsConstructor
@@ -26,28 +29,32 @@ public class ProjectController {
 
     @GetMapping
     public ResponseEntity<? extends BasicResponse> findAll(Pageable pageable) {
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(new ListResponse<>(projectService.findAll(pageable)));
     }
 
     @GetMapping("{postId}")
     public ResponseEntity<? extends BasicResponse> findById(@PathVariable("postId") Long id) {
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(new CommonResponse<>(projectService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<? extends BasicResponse> save(@RequestBody ProjectSaveRequestDto requestDto) {
+    public ResponseEntity<? extends BasicResponse> save(@Valid @RequestBody ProjectSaveRequestDto requestDto) {
         Long saveId = projectService.save(requestDto);
 
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
                 .body(new CommonResponse<>(projectService.findById(saveId)));
     }
 
     @PutMapping("{projectId}")
-    public ResponseEntity<? extends BasicResponse> update(@PathVariable("projectId") Long id, @RequestBody ProjectSaveRequestDto updateDto) {
+    public ResponseEntity<? extends BasicResponse> update(@PathVariable("projectId") Long id, @Valid @RequestBody ProjectSaveRequestDto updateDto) {
         Long projectId = projectService.update(id, updateDto);
-        return ResponseEntity.ok()
+        return ResponseEntity
+                .status(HttpStatus.OK)
                 .body(new CommonResponse<>(projectService.findById(projectId)));
     }
 
