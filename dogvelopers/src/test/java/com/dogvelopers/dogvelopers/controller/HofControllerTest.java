@@ -6,7 +6,6 @@ import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
 import com.dogvelopers.dogvelopers.service.HofService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +21,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 @SpringBootTest
+@Transactional
 class HofControllerTest {
 
     MockMvc mockMvc;

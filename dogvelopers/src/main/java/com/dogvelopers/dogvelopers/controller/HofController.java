@@ -39,7 +39,6 @@ public class HofController {
 
     @DeleteMapping("{hofId}") // 명예의 전당 회원 삭제
     public ResponseEntity delete(@PathVariable("hofId") Long id) {
-        System.out.println(id);
         hofService.delete(id);
         return ResponseEntity.noContent()
                 .build();

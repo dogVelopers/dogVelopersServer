@@ -4,23 +4,22 @@ import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
 import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
-import com.dogvelopers.dogvelopers.dto.project.ProjectResponseDto;
-import com.dogvelopers.dogvelopers.dto.project.ProjectSaveRequestDto;
 import com.dogvelopers.dogvelopers.entity.Hof;
+import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.HofRepository;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
-import com.dogvelopers.dogvelopers.repository.ProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 public class HofServiceTest {
 
     @Autowired
@@ -33,11 +32,11 @@ public class HofServiceTest {
     MemberRepository memberRepository;
 
     @Test
-    @DisplayName("dto를 받아 저장하고 hof를 조회")
+    @DisplayName("dto를 받아 저장하고 Hof를 조회")
     void save() {
         // given
         MemberResponseDto memberResponseDto = saveDto(generateMemberRequestDto());
-        HofRequestDto dto = generateHofRequestDto(memberResponseDto.getId() , "김재연");
+        HofRequestDto dto = generateHofRequestDto(memberResponseDto.getId() , "카카오");
 
         // when
         HofResponseDto hofResponseDto = hofService.save(dto); // dto를 저장하고 , 반환 받아서 , Id 로 검사
@@ -52,71 +51,77 @@ public class HofServiceTest {
         );
     }
 
-//    @Test
-//    @DisplayName("Project 갱신하고 조회")
-//    void update() {
-//        ProjectSaveRequestDto projectSaveRequestDto = generateDto();
-//
-//        ProjectSaveRequestDto updateDto = ProjectSaveRequestDto.builder()
-//                .name("수정")
-//                .description("수정")
-//                .startDate(LocalDate.of(2022, 01, 02))
-//                .endDate(LocalDate.of(2022, 02, 02))
-//                .build();
-//
-//        Long saveId = projectService.save(projectSaveRequestDto);
-//        Long updateId = projectService.update(saveId, updateDto);
-//
-//        ProjectResponseDto findUpdateDto = projectService.findById(updateId);
-//
-//        assertAll(
-//                () -> assertEquals(findUpdateDto.getId(), saveId),
-//                () -> assertEquals(findUpdateDto.getName(), updateDto.getName()),
-//                () -> assertEquals(findUpdateDto.getDescription(), updateDto.getDescription()),
-//                () -> assertEquals(findUpdateDto.getStartDate(), updateDto.getStartDate()),
-//                () -> assertEquals(findUpdateDto.getEndDate(), updateDto.getEndDate())
-//        );
-//    }
-//
-//    @Test
-//    @DisplayName("존재하지 않는 게시물을 수정하여 에러를 던짐")
-//    void update_error() {
-//        // given
-//        ProjectSaveRequestDto updateDto = generateDto();
-//
-//        // when, then
-//        assertThrows(EntityNotFoundException.class, () ->
-//                projectService.update(1L, updateDto));
-//    }
-//
-//    @Test
-//    @DisplayName("Project 삭제")
-//    void delete() {
-//        // given
-//        ProjectSaveRequestDto projectSaveRequestDto = generateDto();
-//        Long saveId = projectService.save(projectSaveRequestDto);
-//
-//        // when
-//        projectService.delete(saveId);
-//
-//        // then
-//        assertEquals(projectRepository.findAll().size(), 0);
-//    }
-//
-//    @Test
-//    @DisplayName("없는 Project 삭제")
-//    void delete_error() {
-//        // given
-//        ProjectSaveRequestDto deleteDto = generateDto();
-//        Long saveId = projectService.save(deleteDto);
-//
-//        // when
-//        projectService.delete(saveId);
-//
-//        // then
-//        assertThrows(EntityNotFoundException.class, () ->
-//                projectService.delete(saveId));
-//    }
+    @Test
+    @DisplayName("Hof를 갱신하고 조회")
+    void update() {
+        // given
+        String beforeCompany = "카카오";
+        MemberResponseDto memberResponseDto = saveDto(generateMemberRequestDto());
+        HofRequestDto dto = generateHofRequestDto(memberResponseDto.getId() , beforeCompany);
+
+        // when
+        String afterCompany = "삼성" , afterIntroduction = "안녕하세요!";
+        HofResponseDto before = hofService.save(dto); // save 먼저하고
+        HofRequestDto updateDto = HofRequestDto.builder()
+                .company(afterCompany)
+                .introduction(afterIntroduction)
+                .memberId(memberResponseDto.getId())
+                .build(); // 갱신할 내용으로 HofRequestDto 선언
+
+        HofResponseDto after = hofService.update(before.getId() , updateDto); // 업데이트
+
+        assertAll(
+                () -> assertEquals(after.getCompany(), afterCompany), // update 된 부분 조회
+                () -> assertEquals(after.getIntroduction(), afterIntroduction),
+                () -> assertEquals(before.getId(), after.getId()), // update 가 되었으면 , id는 같아야함
+                () -> assertEquals(before.getMember().getId(), memberResponseDto.getId())
+        );
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 Hof를 수정하여 에러를 던짐")
+    void update_error() {
+        // given
+        MemberResponseDto memberResponseDto = saveDto(generateMemberRequestDto());
+        HofRequestDto updateDto = generateHofRequestDto(memberResponseDto.getId() , "카카오");
+
+        // when, then
+        assertThrows(CustomException.class, () ->
+                hofService.update(100L, updateDto));
+    }
+
+    @Test
+    @DisplayName("Hof 삭제")
+    void delete() {
+        // given
+        MemberResponseDto memberResponseDto = saveDto(generateMemberRequestDto());
+        HofRequestDto hofRequestDto = generateHofRequestDto(memberResponseDto.getId() , "카카오");
+
+        HofResponseDto hofResponseDto = hofService.save(hofRequestDto);
+
+        // when
+        hofService.delete(hofResponseDto.getId());
+
+        // then
+        assertEquals(hofRepository.existsById(hofResponseDto.getId()) , false);
+    }
+
+    @Test
+    @DisplayName("없는 Hof 삭제")
+    void delete_error() {
+        // given
+        MemberResponseDto memberResponseDto = saveDto(generateMemberRequestDto());
+        HofRequestDto deleteDto = generateHofRequestDto(memberResponseDto.getId() , "카카오");
+
+        HofResponseDto hofResponseDto = hofService.save(deleteDto);
+
+        // when
+        hofService.delete(hofResponseDto.getId());
+
+        // then
+        assertThrows(CustomException.class, () ->
+                hofService.delete(hofResponseDto.getId()));
+    }
 
     static private MemberRequestDto generateMemberRequestDto(){
 
@@ -142,5 +147,4 @@ public class HofServiceTest {
         return new MemberResponseDto(memberRepository.save(memberRequestDto.toEntity()));
         // dto를 저장하면서 , ResponseDto 를 반환
     }
-
 }

@@ -1,49 +1,61 @@
 package com.dogvelopers.dogvelopers.repository;
 
-import com.dogvelopers.dogvelopers.entity.Project;
+import com.dogvelopers.dogvelopers.entity.Member;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@DataJpaTest
+@Transactional
 public class MemberRepositoryTest {
 
     @Autowired
-    ProjectRepository projectRepository;
+    MemberRepository memberRepository;
 
     @Test
-    @DisplayName("project 목록 가장 최근 시작한 순서로 조회")
-    void findAllOrderByStartDate() {
+    @DisplayName("Member 목록 generation 의 역순으로 정렬해서 pagination 적용")
+    void findAllByOrderByGenerationDesc() {
         // given
-        Project p1 = generateProject(1);
-        Project p2 = generateProject(2);
-        Project p3 = generateProject(3);
+        Member m1 = generateMember(1L);
+        Member m2 = generateMember(2L);
+        Member m3 = generateMember(3L);
+        Member m4 = generateMember(4L);
 
-        projectRepository.save(p1);
-        projectRepository.save(p2);
-        projectRepository.save(p3);
+        memberRepository.save(m1);
+        memberRepository.save(m2);
+        memberRepository.save(m3);
+        memberRepository.save(m4);
 
         // when
         PageRequest pageRequest = PageRequest.of(0, 3);
-        List<Project> projects = projectRepository.findProjectsOrderByStartDate(pageRequest);
+        List<Member> members = memberRepository.findAllByOrderByGenerationDesc(pageRequest).getContent(); // getContent 하면 Page -> List 로 변경 가능
 
         // then
-        assertEquals(projects.size(), 3);
+        int index = 0;
+
+        for(int i = 4; i != 1; i--){ // 4 ~ 1 번 순으로 조회 되었는지 , 확인
+            assertEquals(members.get(index++).getGeneration() , new Long(i));
+        }
+        assertEquals(members.size(), 3);
     }
 
-    Project generateProject(int index) {
-        return Project.builder()
-                .name("제목" + index)
-                .description("이런 프로젝트")
-                .startDate(LocalDate.of(2022, index, index))
-                .endDate(LocalDate.of(2022, index + 2, 1))
+
+
+    Member generateMember(Long generation) {
+        return Member.builder()
+                .name("김재연")
+                .major("소프")
+                .birthDay(LocalDate.of(1998, 6, 5))
+                .generation(generation)
+                .studentId("201733009")
                 .build();
     }
 }

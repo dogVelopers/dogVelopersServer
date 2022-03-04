@@ -2,7 +2,6 @@ package com.dogvelopers.dogvelopers.service;
 
 import com.dogvelopers.dogvelopers.dto.hof.HofRequestDto;
 import com.dogvelopers.dogvelopers.dto.hof.HofResponseDto;
-import com.dogvelopers.dogvelopers.dto.hof.SortByGeneration;
 import com.dogvelopers.dogvelopers.entity.Hof;
 import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.handler.CustomException;
@@ -12,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,22 +33,16 @@ public class HofService {
 
     @Transactional
     public List<HofResponseDto> findAll() {
-
-        return hofRepository.findAll().stream()
-                .sorted(new SortByGeneration())
+        return hofRepository.findAllByOrderByGenerationDesc().stream()
                 .map(hof -> new HofResponseDto(hof))
                 .collect(Collectors.toList());
     }
 
     @Transactional
     public List<HofResponseDto> findByGeneration(Long generation) { // 기수 별로 조회
-        List<HofResponseDto> hofResponseDtos = new ArrayList<>();
-        List<Hof> hofs = hofRepository.findAll();
-        Collections.sort(hofs, new SortByGeneration());
-        for (Hof hof : hofs) {
-            if (hof.getMember().getGeneration() == generation) hofResponseDtos.add(new HofResponseDto(hof));
-        }
-        return hofResponseDtos;
+        return hofRepository.findByGenerationOrderByGenerationDesc(generation).stream()
+                .map(hof -> new HofResponseDto(hof))
+                .collect(Collectors.toList());
     }
 
     @Transactional(rollbackFor = Exception.class)
