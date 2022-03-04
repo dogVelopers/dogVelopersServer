@@ -1,6 +1,7 @@
 package com.dogvelopers.dogvelopers.dto.member;
 
 import com.dogvelopers.dogvelopers.entity.Member;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;

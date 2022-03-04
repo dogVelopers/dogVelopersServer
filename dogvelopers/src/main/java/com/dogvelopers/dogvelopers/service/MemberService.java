@@ -110,4 +110,5 @@ public class MemberService {
         if (string == null || string.isBlank()) return true;
         return false;
     }
+
 }

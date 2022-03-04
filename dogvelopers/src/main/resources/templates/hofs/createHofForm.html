@@ -63,6 +63,7 @@
         <th>major</th>
         <th>birthDay</th>
         <th>imageUrl</th>
+        <th>image</th>
     </tr>
     <tr th:each="members : ${memberList}">
         <td th:text="${members.id}"></td>
@@ -71,6 +72,7 @@
         <td th:text="${members.major}"></td>
         <td th:text="${members.birthDay}"></td>
         <td th:text="${members.imageUrl}"></td>
+        <td><img th:src = "@{${members.imageUrl}}" width = "100" height = "100"/></td>
     </tr>
 </table>
 </body>

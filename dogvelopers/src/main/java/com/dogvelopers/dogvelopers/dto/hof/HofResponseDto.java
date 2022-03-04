@@ -4,8 +4,6 @@ import com.dogvelopers.dogvelopers.entity.Hof;
 import com.dogvelopers.dogvelopers.entity.Member;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 public class HofResponseDto {
 

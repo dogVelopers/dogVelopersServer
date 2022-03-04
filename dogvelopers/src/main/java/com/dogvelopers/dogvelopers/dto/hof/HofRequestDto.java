@@ -15,12 +15,18 @@ public class HofRequestDto {
     private String company;
     private String introduction;
 
-    @Builder
     public Hof toEntity(){
         return Hof.builder()
                 .member(member)
                 .company(company)
                 .introduction(introduction)
                 .build();
+    }
+
+    @Builder
+    public HofRequestDto(Long memberId , String company , String introduction){
+        this.memberId = memberId;
+        this.company = company;
+        this.introduction = introduction;
     }
 }

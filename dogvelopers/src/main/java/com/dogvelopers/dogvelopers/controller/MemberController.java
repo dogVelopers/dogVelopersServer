@@ -30,7 +30,7 @@ public class MemberController {
     public ResponseEntity<MemberResponseDto> save(
             @RequestPart(value = "file" , required = false) MultipartFile file, // 이것 역시 필수 x
             MemberRequestDto memberRequestDto) {
-        return ResponseEntity.ok(memberService.save(file , memberRequestDto));
+        return new ResponseEntity(memberService.save(file , memberRequestDto) , HttpStatus.CREATED);
     }
 
     @PutMapping("{memberId}") // member 수정

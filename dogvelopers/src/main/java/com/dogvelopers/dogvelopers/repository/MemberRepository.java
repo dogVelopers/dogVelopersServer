@@ -1,6 +1,8 @@
 package com.dogvelopers.dogvelopers.repository;
 
 import com.dogvelopers.dogvelopers.entity.Member;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
@@ -10,4 +12,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findByGenerationOrderByGenerationDesc(Long generation);
 
     List<Member> findAllByOrderByGenerationDesc();
+
+    Page<Member> findAllByOrderByGenerationDesc(Pageable pageable);
+
 }
