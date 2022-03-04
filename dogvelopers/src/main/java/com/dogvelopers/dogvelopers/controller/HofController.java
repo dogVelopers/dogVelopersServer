@@ -34,11 +34,12 @@ public class HofController {
 
     @PutMapping("{hofId}") // 명예의 전당 회원 수정
     public ResponseEntity<MemberResponseDto> update(@PathVariable("hofId") Long id, HofRequestDto hofRequestDto) {
-        return new ResponseEntity(hofService.update(id, hofRequestDto), HttpStatus.OK);
+        return new ResponseEntity(hofService.update(id, hofRequestDto), HttpStatus.CREATED);
     }
 
     @DeleteMapping("{hofId}") // 명예의 전당 회원 삭제
     public ResponseEntity delete(@PathVariable("hofId") Long id) {
+        System.out.println(id);
         hofService.delete(id);
         return ResponseEntity.noContent()
                 .build();

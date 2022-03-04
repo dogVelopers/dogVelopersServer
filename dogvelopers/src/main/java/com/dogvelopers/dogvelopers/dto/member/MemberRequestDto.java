@@ -26,7 +26,6 @@ public class MemberRequestDto {
 
     private String imageUrl;
 
-    @Builder
     public Member toEntity(){
         return Member.builder()
                 .name(name)
@@ -36,5 +35,15 @@ public class MemberRequestDto {
                 .generation(generation)
                 .imageUrl(imageUrl)
                 .build();
+    }
+
+    @Builder
+    public MemberRequestDto(String name , Long generation , String studentId , String major , LocalDate birthDay , String imageUrl){
+        this.name = name;
+        this.generation = generation;
+        this.studentId = studentId;
+        this.major = major;
+        this.birthDay = birthDay;
+        this.imageUrl = imageUrl;
     }
 }
