@@ -18,8 +18,11 @@ public class HofController {
     private final HofService hofService;
 
     @GetMapping() // 명예의 전당 모두 조회
-    public ResponseEntity<HofResponseDto> findAll() { // 명예의 전당 전부 조회
-        return new ResponseEntity(hofService.findAll(), HttpStatus.OK);
+    public ResponseEntity<HofResponseDto> findAll(Long offset ,
+                                                  Long page ,
+                                                  @RequestParam(value = "sortby" , required = false) String sortBy,
+                                                  String direction) { // 명예의 전당 전부 조회
+        return new ResponseEntity(hofService.findAllByOrderByComponentDirection(offset , page , sortBy , direction), HttpStatus.OK);
     }
 
     @GetMapping("{generation}") // 명예의 전당 기수별로 조회

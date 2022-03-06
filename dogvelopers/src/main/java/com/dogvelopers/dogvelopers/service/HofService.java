@@ -8,6 +8,8 @@ import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.HofRepository;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,63 @@ public class HofService {
                 () -> {throw new CustomException(NOT_FOUND_INFO);}
         );
         return new HofResponseDto(hof);
+    }
+
+    @Transactional
+    public List<HofResponseDto> findAllByOrderByComponentDirection(Long offset , Long page , String sortBy , String direction){
+        List<Hof> hofs; // 받은 결과를 채울 것
+
+        // sortBy , direction 중 하나만 null 혹은 blank 인 경우
+        if((checkNullBlank(sortBy) && !checkNullBlank(direction)) || (!checkNullBlank(sortBy) && checkNullBlank(direction)))
+            throw new CustomException(BAD_REQUEST_INFO);
+
+        if((offset == null && !(page == null)) || (!(offset == null) && page == null))
+            throw new CustomException(BAD_REQUEST_INFO);
+
+        if(checkNullBlank(sortBy) && checkNullBlank(direction)){ // 하나라도 비어있으면 실행 그냥 pagination만
+            if(offset == null && page == null){ // pagination 안된 그냥 all
+                hofs = hofRepository.findAll();
+            }else{
+                hofs = hofRepository.findAll(PageRequest.of(page.intValue() , offset.intValue())).getContent();
+            }
+        }
+        else{ // 솔트가 다 된다.
+            if(offset == null && page == null){ // pagination 적용 x
+                if(sortBy.equals("generation")){
+                    if(direction.equals("asc")){
+                        hofs = hofRepository.findAllByOrderByGenerationAsc();
+                    }else{
+                        hofs = hofRepository.findAllByOrderByGenerationDesc();
+                    }
+                }else{
+                    if(direction.equals("asc")){
+                        hofs = hofRepository.findAllByOrderByStudentIdAsc();
+                    }else{
+                        hofs = hofRepository.findAllByOrderByStudentIdDesc();
+                    }
+                }
+            }
+            else{ // pagination 적용 o
+                PageRequest pageRequest = PageRequest.of(page.intValue() , offset.intValue());
+                if(sortBy.equals("generation")){
+                    if(direction.equals("asc")){
+                        hofs = hofRepository.findAllByOrderByGenerationAsc(pageRequest).getContent();
+                    }else{
+                        hofs = hofRepository.findAllByOrderByGenerationDesc(pageRequest).getContent();
+                    }
+                }else{
+                    if(direction.equals("asc")){
+                        hofs = hofRepository.findAllByOrderByStudentIdAsc(pageRequest).getContent();
+                    }else{
+                        hofs = hofRepository.findAllByOrderByStudentIdDesc(pageRequest).getContent();
+                    }
+                }
+            }
+        }
+
+        return hofs.stream()
+                .map(hof -> new HofResponseDto(hof))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -113,4 +172,5 @@ public class HofService {
         if (string == null || string.isBlank()) return true;
         return false;
     }
+
 }
