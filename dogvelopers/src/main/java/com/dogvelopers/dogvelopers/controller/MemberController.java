@@ -17,8 +17,11 @@ public class MemberController {
     private final MemberService memberService;
 
     @GetMapping()
-    public ResponseEntity<MemberResponseDto> findAll() { // member 전체 조회
-        return new ResponseEntity(memberService.findAll(), HttpStatus.OK);
+    public ResponseEntity<MemberResponseDto> findAll(Long offset ,
+                                                     Long page ,
+                                                     @RequestParam(value = "sortby" , required = false) String sortBy,
+                                                     String direction) { // member 전체 조회
+        return new ResponseEntity(memberService.findAllByOrderByComponentDirection(offset , page , sortBy , direction), HttpStatus.OK);
     }
 
     @GetMapping("{generation}") // 기수로 검색

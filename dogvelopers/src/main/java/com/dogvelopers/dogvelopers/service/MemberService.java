@@ -2,11 +2,13 @@ package com.dogvelopers.dogvelopers.service;
 
 import com.dogvelopers.dogvelopers.dto.member.MemberRequestDto;
 import com.dogvelopers.dogvelopers.dto.member.MemberResponseDto;
+import com.dogvelopers.dogvelopers.entity.Hof;
 import com.dogvelopers.dogvelopers.entity.Member;
 import com.dogvelopers.dogvelopers.handler.CustomException;
 import com.dogvelopers.dogvelopers.repository.MemberRepository;
 import com.dogvelopers.dogvelopers.service.image.FileUploadService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -45,7 +47,64 @@ public class MemberService {
     }
 
     @Transactional
-    public List<MemberResponseDto> findAll() { // 기수의 역순으로 반환되게 끔 설정
+    public List<MemberResponseDto> findAllByOrderByComponentDirection(Long offset , Long page , String sortBy , String direction) { // 기수의 역순으로 반환되게 끔 설정
+        List<Member> members;
+
+        // sortBy , direction 중 하나만 null 혹은 blank 인 경우
+        if((checkNullBlank(sortBy) && !checkNullBlank(direction)) || (!checkNullBlank(sortBy) && checkNullBlank(direction)))
+            throw new CustomException(BAD_REQUEST_INFO);
+
+        if((offset == null && !(page == null)) || (!(offset == null) && page == null))
+            throw new CustomException(BAD_REQUEST_INFO);
+
+        if(checkNullBlank(sortBy) && checkNullBlank(direction)){ // 하나라도 비어있으면 실행 그냥 pagination만
+            if(offset == null && page == null){ // pagination 안된 그냥 all
+                members = memberRepository.findAllByOrderByGenerationDesc();
+            }else{
+                members = memberRepository.findAllByOrderByGenerationDesc(PageRequest.of(page.intValue() , offset.intValue())).getContent();
+            }
+        }
+        else{ // 솔트가 다 된다.
+            if(offset == null && page == null){ // pagination 적용 x
+                if(sortBy.equals("generation")){
+                    if(direction.equals("asc")){
+                        members = memberRepository.findAllByOrderByGenerationAsc();
+                    }else{
+                        members = memberRepository.findAllByOrderByGenerationDesc();
+                    }
+                }else{
+                    if(direction.equals("asc")){
+                        members = memberRepository.findAllByOrderByStudentIdAsc();
+                    }else{
+                        members = memberRepository.findAllByOrderByStudentIdDesc();
+                    }
+                }
+            }
+            else{ // pagination 적용 o
+                PageRequest pageRequest = PageRequest.of(page.intValue() , offset.intValue());
+                if(sortBy.equals("generation")){
+                    if(direction.equals("asc")){
+                        members = memberRepository.findAllByOrderByGenerationAsc(pageRequest).getContent();
+                    }else{
+                        members = memberRepository.findAllByOrderByGenerationDesc(pageRequest).getContent();
+                    }
+                }else{
+                    if(direction.equals("asc")){
+                        members = memberRepository.findAllByOrderByStudentIdAsc(pageRequest).getContent();
+                    }else{
+                        members = memberRepository.findAllByOrderByStudentIdDesc(pageRequest).getContent();
+                    }
+                }
+            }
+        }
+
+        return members.stream()
+                .map(member -> new MemberResponseDto(member))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<MemberResponseDto> findAll(){
         return memberRepository.findAllByOrderByGenerationDesc().stream()
                 .map(member -> new MemberResponseDto(member))
                 .collect(Collectors.toList());
