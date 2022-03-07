@@ -26,7 +26,7 @@ import java.time.LocalDate;
 
 @SpringBootTest
 @Transactional
-class HofControllerTest {
+public class HofControllerTest {
 
     MockMvc mockMvc;
 
