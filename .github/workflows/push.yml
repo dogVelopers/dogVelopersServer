@@ -3,4 +3,4 @@ name: Spring build gradle
 on:
   push:
     branches:
-      - develop # 내가 평소에 PR 하기 전 작업하는 branch 에다가 적용
+#      - develop # 내가 평소에 PR 하기 전 작업하는 branch 에다가 적용
