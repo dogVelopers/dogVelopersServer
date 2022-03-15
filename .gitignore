@@ -1,5 +1,4 @@
 HELP.md
-.gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
@@ -35,7 +34,6 @@ build/
 !**/src/test/**/build/
 .idea/workspace.xml
 appspec.yml
-application.yml
 application-aws.yml
 application-credentials.yml
 
