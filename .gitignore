@@ -104,7 +104,6 @@ out/
 /.github/workflows/gradle.yml
 /.gradle/
 /gradle/
-/.github/
 /gradle/wrapper/
 /.idea/
 ### NetBeans ###
@@ -122,7 +121,6 @@ out/
 /.github/workflows/gradle.yml
 /.gradle/
 /gradle/
-/.github/
 /gradle/wrapper/
 /.idea/
 ### NetBeans ###
@@ -140,6 +138,5 @@ out/
 /.github/workflows/gradle.yml
 /.gradle/
 /gradle/
-/.github/
 /gradle/wrapper/
 /.idea/
