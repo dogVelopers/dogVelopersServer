@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name : working directory 지정
-        run:
+        uses:
           working-directory: ./dogvelopers # gradlew 가 있는 경로 설정
 
       # 소스코드들은 11을 위주로 짰음
