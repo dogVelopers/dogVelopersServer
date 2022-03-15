@@ -10,8 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-#      S3_BUCKET_NAME: dogveloper-build # bucket name 변수 생성
-      PATH: ./dogvelopers
+      S3_BUCKET_NAME: dogveloper-build # bucket name 변수 생성
+      working-directory: /home/runner/work/dogVelopersServer/dogVelopersServer/dogvelopers
 
     steps:
       - uses: actions/checkout@v2
