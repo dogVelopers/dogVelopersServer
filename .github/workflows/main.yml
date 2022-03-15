@@ -3,11 +3,11 @@ name: Spring build gradle
 on:
   push:
     branches:
-      - main
-      - develop
+      - develop # 내가 평소에 PR 하기 전 작업하는 branch 에다가 적용
 
   pull_request:
-    branches: [ main ]
+    branches:
+      - main # pull request 시에 적용되는 branch 에다가 적용
 
 #  workflow_dispatch:
 
@@ -16,6 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+
+      env:
+        working-directory: ./dogvelopers # gradlew 가 있는 경로 설정
 
       # 소스코드들은 11을 위주로 짰음
       - name: Set up JDK 11
@@ -27,8 +30,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: set gradle
-        run: ./gradlew wrapper
+#      - name: set gradle
+#        run: ./gradlew wrapper
 
       # Gradle test를 실행한다
       - name: Test with Gradle
