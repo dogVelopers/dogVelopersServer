@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: /home/runner/work/dogVelopersServer/dogVelopersServer/dogvelopers
-      key: {secrets.KEY}
+      key: ${{ secrets.KEY }}
 
     steps:
       - uses: actions/checkout@v2
