@@ -16,6 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: /home/runner/work/dogVelopersServer/dogVelopersServer/dogvelopers
+      key: {secrets.KEY}
 
     steps:
       - uses: actions/checkout@v2
@@ -33,7 +34,7 @@ jobs:
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        run: ./gradlew --debug test
+        run: ./gradlew test
         working-directory: ${{ env.working-directory }}
 
       # 테스트 후 Result를 보기위해 Publish Unit Test Results step 추가
@@ -42,3 +43,11 @@ jobs:
         if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
         with:
           files: dogvelopers/build/test-results/**/*.xml # junit report xml 을 가르킴
+
+      - name: gradle build
+        run: ./gradlew build
+        working-directory: ${{ env.working-directory }}
+
+      - name: send to aws
+        run: scp -i $key ~/Desktop/dogvelopers.jar ubuntu@54.180.208.212:~/daemon
+
