@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - develop
+#      - develop
   pull_request:
     branches: [ main ]
 
@@ -22,6 +22,9 @@ jobs:
         with:
           java-version: 11
 
+      - name: set gradle
+      - run: gradle wrapper
+  
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
