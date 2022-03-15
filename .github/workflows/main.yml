@@ -28,11 +28,13 @@ jobs:
 
       # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
-        run: chmod +x ./dogvelopers/gradlew
+        run: chmod +x gradlew
+        working-directory: ${{ env.working-directory }}
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        run: ./dogvelopers/gradlew test
+        run: gradlew test
+        working-directory: ${{ env.working-directory }}
 
       # 테스트 후 Result를 보기위해 Publish Unit Test Results step 추가
       - name: Publish Unit Test Results
@@ -40,3 +42,4 @@ jobs:
         if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
         with:
           files: build/test-results/**/*.xml # junit report xml 을 가르킴
+        working-directory: ${{ env.working-directory }}
