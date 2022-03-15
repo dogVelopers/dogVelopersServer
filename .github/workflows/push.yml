@@ -9,9 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-#    env:
+    env:
 #      S3_BUCKET_NAME: dogveloper-build # bucket name 변수 생성
-#      PATH: ./dogvelopers
+      PATH: ./dogvelopers
 
     steps:
       - uses: actions/checkout@v2
