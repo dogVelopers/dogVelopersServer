@@ -32,7 +32,7 @@ jobs:
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        use: mikepenz/action-junit-report@v2
+        uses: mikepenz/action-junit-report@v2
         run: ./gradlew test
         working-directory: ${{ env.working-directory }}
 
