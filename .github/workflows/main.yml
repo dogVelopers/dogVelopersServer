@@ -30,22 +30,19 @@ jobs:
         with:
           java-version: 11
 
-      - name: modify permission for gradlew
-        run: cd ./dogvelopers
-      # Gradle wrapper 파일 실행 권한주기
+#      - name: modify permission for gradlew
+#        run: chmod 777 gradlew
 
-      - name: location check
-        run: pwd
-        
+      # Gradle wrapper 파일 실행 권한주기
       - name: Grant execute permission for gradlew
-        run: chmod +x ./gradlew
+        run: chmod +x ./dogvelopers/gradlew
 
 #      - name: set gradle
 #        run: ./gradlew wrapper
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        run: ./gradlew --info test
+        run: ./dogvelopers/gradlew --info test
 
       # 테스트 후 Result를 보기위해 Publish Unit Test Results step 추가
       - name: Publish Unit Test Results
