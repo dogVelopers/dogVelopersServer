@@ -18,6 +18,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: mikepenz/action-junit-report@v2
 
       # 소스코드들은 11을 위주로 짰음
       - name: Set up Jdk 11
@@ -32,7 +33,6 @@ jobs:
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        uses: mikepenz/action-junit-report@v2
         run: ./gradlew test
         working-directory: ${{ env.working-directory }}
 
