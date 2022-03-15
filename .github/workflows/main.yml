@@ -31,8 +31,12 @@ jobs:
           java-version: 11
 
       - name: modify permission for gradlew
-        run: cd ./dogvelopers 
+        run: cd ./dogvelopers
       # Gradle wrapper 파일 실행 권한주기
+
+      - name: location check
+        run: pwd
+        
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
