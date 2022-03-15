@@ -33,7 +33,7 @@ jobs:
 
       # Gradle test를 실행한다
       - name: Test with Gradle
-        run: gradlew test
+        run: ./gradlew test
         working-directory: ${{ env.working-directory }}
 
       # 테스트 후 Result를 보기위해 Publish Unit Test Results step 추가
