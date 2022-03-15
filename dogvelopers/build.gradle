@@ -52,6 +52,6 @@ bootJar{
     archiveVersion = "0.0.1"
 }
 
-test {
-    useJUnitPlatform() // 이 의존성이 있어야지 , github action 시에 test 돌릴 수 있음
-}
+//test {
+//    useJUnitPlatform() // 이 의존성이 있어야지 , github action 시에 test 돌릴 수 있음
+//}
