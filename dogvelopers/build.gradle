@@ -29,10 +29,12 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.1.0'
-//    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.1.0'
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.7.0")
+    testImplementation ('org.junit.jupiter:junit-jupiter:5.7.0')
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.7.0")
 
     // AWS S3
     implementation 'org.springframework.cloud:spring-cloud-aws-autoconfigure:2.2.1.RELEASE'
@@ -41,9 +43,9 @@ dependencies {
 }
 
 springBoot {
-    mainClass = 'com.dogvelopers.dogvelopers.DogvelopersApplication'
+    mainClass = 'com.dogvelopers.dogvelopers.DogvelopersApplication' // build 시 main class 를 찾아주기 위함
 }
 
-//test {
-//    useJUnitPlatform()
-//}
+test {
+    useJUnitPlatform() // 이 의존성이 있어야지 , github action 시에 test 돌릴 수 있음
+}
