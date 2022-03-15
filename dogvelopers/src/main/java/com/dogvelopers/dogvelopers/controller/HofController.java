@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("hofs")
-public class HofController {
+public class HofController { 
 
     private final HofService hofService;
 
