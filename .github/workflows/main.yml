@@ -41,4 +41,4 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v1
         if: ${{ always() }}  # 테스트가 실패하여도 Report를 보기 위해 `always`로 설정
         with:
-          files: /home/runner/work/dogVelopersServer/dogVelopersServer/dogvelopers/build/test-results/**/*.xml # junit report xml 을 가르킴
+          files: dogvelopers/build/test-results/**/*.xml # junit report xml 을 가르킴
