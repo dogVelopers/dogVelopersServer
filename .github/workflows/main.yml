@@ -15,7 +15,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      working-directory: ./dogvelopers
+      working-directory: /home/runner/work/dogVelopersServer/dogVelopersServer/dogvelopers
 
     steps:
       - uses: actions/checkout@v2
