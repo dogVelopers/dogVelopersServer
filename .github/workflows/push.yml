@@ -31,10 +31,8 @@ jobs:
           echo "${{secrets.APPLICATION_AWS}}" >> ./dogvelopers/src/main/resources/application-aws.yml
           echo "${{secrets.APPLICATION_CREDTIALS}}" >> ./dogvelopers/src/main/resources/application-credentials.yml
 
-      - name: install MySql
-        run: apt-get install mysql-server
-
-      - name: 
+#      - name: install MySql
+#        run: apt-get install mysql-server
 
       # Gradle test를 실행한다
       - name: Test with Gradle
