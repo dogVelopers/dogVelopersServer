@@ -10,8 +10,8 @@ spring:
         enable: true
 
   jpa:
-    show-sql: true
-      hibernate:
+    hibernate:
+      show-sql: true
         ddl-auto: create
   profiles:
     include:
