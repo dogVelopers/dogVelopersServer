@@ -28,8 +28,8 @@ jobs:
 
       - name: Set S3
         run : |
-          echo ${{secrets.APPLICATION_AWS}} >> ./dogvelopers/src/main/resources/application-credentials.yml
-          echo ${{secrets.APPLICATION_CREDTIALS}} >> ./dogvelopers/src/main/resources/application-credentials.yml
+          echo "${{secrets.APPLICATION_AWS}}" >> ./dogvelopers/src/main/resources/application-credentials.yml
+          echo "${{secrets.APPLICATION_CREDTIALS}}" >> ./dogvelopers/src/main/resources/application-credentials.yml
 
       # Gradle test를 실행한다
       - name: Test with Gradle
