@@ -11,8 +11,8 @@ spring:
 
   jpa:
     show-sql: true
-  #    hibernate:
-  #      ddl-auto: create
+      hibernate:
+        ddl-auto: create
   profiles:
     include:
       - aws
