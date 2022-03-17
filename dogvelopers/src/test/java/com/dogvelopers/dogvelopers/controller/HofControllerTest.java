@@ -28,6 +28,7 @@ import java.time.LocalDate;
 @Transactional
 public class HofControllerTest {
 
+    @Autowired
     MockMvc mockMvc;
 
     @Autowired

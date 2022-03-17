@@ -25,6 +25,7 @@ import java.time.LocalDate;
 @Transactional
 public class ProjectControllerTest {
 
+    @Autowired
     MockMvc mockMvc;
 
     @Autowired

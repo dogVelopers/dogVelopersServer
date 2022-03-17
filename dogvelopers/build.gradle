@@ -46,6 +46,12 @@ springBoot {
     mainClass = 'com.dogvelopers.dogvelopers.DogvelopersApplication' // build 시 main class 를 찾아주기 위함
 }
 
+bootJar{
+    archivesBaseName = 'dogvelopers'
+    archiveFileName = 'dogvelopers.jar'
+    archiveVersion = "0.0.1"
+}
+
 test {
     useJUnitPlatform() // 이 의존성이 있어야지 , github action 시에 test 돌릴 수 있음
 }
